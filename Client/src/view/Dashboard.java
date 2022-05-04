@@ -431,6 +431,11 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/send.png"))); // NOI18N
         jLabel7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel7MouseClicked(evt);
+            }
+        });
 
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/emoji.png"))); // NOI18N
@@ -515,15 +520,22 @@ public class Dashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+        // TODO add your handling code here:
+        clickSendMessage();
+    }//GEN-LAST:event_jLabel7MouseClicked
+
     private void inputMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputMessageActionPerformed
         // TODO add your handling code here:
-
+        clickSendMessage();
     }//GEN-LAST:event_inputMessageActionPerformed
 
     private void inputMessageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputMessageMouseClicked
         // TODO add your handling code here:
-        inputMessage.setForeground(new java.awt.Color(0, 0, 0));
-        inputMessage.setText("");
+        if (inputMessage.getText().equals("Write a message...")) {
+            inputMessage.setForeground(new java.awt.Color(0, 0, 0));
+            inputMessage.setText("");
+        }
     }//GEN-LAST:event_inputMessageMouseClicked
 
     /**
@@ -559,6 +571,14 @@ public class Dashboard extends javax.swing.JFrame {
                 new Dashboard().setVisible(true);
             }
         });
+    }
+
+    void clickSendMessage() {
+        String newTextMessage = inputMessage.getText();
+        if (!newTextMessage.equals("")) {
+            System.out.println("Input message: " + newTextMessage);
+            inputMessage.setText("");
+        }
     }
 
     javax.swing.JPanel generateEachMessageCard() {
