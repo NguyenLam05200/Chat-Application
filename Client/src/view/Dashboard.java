@@ -33,7 +33,7 @@ public class Dashboard extends javax.swing.JFrame {
 
     }
 
-    public Dashboard(Socket _socket, DataOutputStream _outStream) {
+    public Dashboard(Socket _socket, ObjectOutputStream _outStream) {
         this.outStream = _outStream;
         this.socket = _socket;
 
@@ -594,7 +594,7 @@ public class Dashboard extends javax.swing.JFrame {
 
             try {
                 // write on the output stream
-                outStream.writeUTF(newTextMessage);
+                outStream.writeObject(temp);
             } catch (IOException e) {
                 System.out.println("Server disconnected!");
 //                        e.printStackTrace();
@@ -702,5 +702,5 @@ public class Dashboard extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     private javax.swing.JPanel listMessagePanel = generateEachMessageCard();
     Socket socket;
-    DataOutputStream outStream;
+    ObjectOutputStream outStream;
 }

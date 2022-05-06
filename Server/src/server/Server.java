@@ -12,6 +12,8 @@ import Config.Env;
 import java.io.*;
 import java.util.*;
 import java.net.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 // Server class
 public class Server {
@@ -37,8 +39,9 @@ public class Server {
             System.out.println("New client request received : " + s);
 
             // obtain input and output streams
-            DataInputStream dis = new DataInputStream(s.getInputStream());
-            DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+            ObjectOutputStream dos = new ObjectOutputStream(s.getOutputStream());
+            dos.flush();
+            ObjectInputStream dis = new ObjectInputStream(s.getInputStream());
 
             System.out.println("Creating a new handler for this client...");
 
@@ -70,14 +73,14 @@ class ClientHandler implements Runnable {
 
     Scanner scn = new Scanner(System.in);
     private String name;
-    final DataInputStream dis;
-    final DataOutputStream dos;
+    final ObjectInputStream dis;
+    final ObjectOutputStream dos;
     Socket s;
     boolean isloggedin;
 
     // constructor
     public ClientHandler(Socket s, String name,
-            DataInputStream dis, DataOutputStream dos) {
+            ObjectInputStream dis, ObjectOutputStream dos) {
         this.dis = dis;
         this.dos = dos;
         this.name = name;
@@ -88,17 +91,25 @@ class ClientHandler implements Runnable {
     @Override
     public void run() {
 
-        String received;
+        Object[] received;
         while (true) {
             try {
                 // receive the string
-                received = dis.readUTF();
+                System.out.println(this.name + ":");
+                received = (Object[]) dis.readObject();
+                for (Object x : received) {
+                    System.out.println(x);
+                }
 
-                System.out.println(this.name + ": " + received);
+                Object[] temp = new Object[]{"status: ok", "data: msg"};
+
+                dos.writeObject(temp);
             } catch (IOException e) {
                 System.out.println(this.name + " disconnected!");
                 break;
 //                e.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         try {

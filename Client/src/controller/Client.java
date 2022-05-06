@@ -25,8 +25,9 @@ public class Client {
         Socket s = new Socket(Env.IPAddress, Env.Port);
 
         // obtaining input and out streams
-        DataInputStream dis = new DataInputStream(s.getInputStream());
-        DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+        ObjectOutputStream dos = new ObjectOutputStream(s.getOutputStream());
+        dos.flush();
+        ObjectInputStream dis = new ObjectInputStream(s.getInputStream());
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -42,13 +43,19 @@ public class Client {
                 while (true) {
                     try {
                         // read the message sent to this client
-                        String msg = dis.readUTF();
-                        System.out.println(msg);
+                        Object[] msg = (Object[]) dis.readObject();
+                        for (Object x : msg) {
+                            System.out.println(x);
+                        }
+//                        System.out.println(msg);
                     } catch (IOException e) {
                         System.out.println("break in readMsg");
                         System.out.println("Server disconnected!");
                         break;
 //                        e.printStackTrace();
+                    } catch (ClassNotFoundException ex) {
+                        System.out.println("catch here");
+                        Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
