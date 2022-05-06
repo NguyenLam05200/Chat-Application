@@ -8,10 +8,13 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.*;
 import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
-import javax.swing.ImageIcon;
 
 /**
  *
@@ -28,6 +31,16 @@ public class Dashboard extends javax.swing.JFrame {
         System.out.println("width: " + jLabel4.getWidth());
         System.out.println("height: " + jLabel4.getHeight());
 
+    }
+
+    public Dashboard(Socket _socket, DataOutputStream _outStream) {
+        this.outStream = _outStream;
+        this.socket = _socket;
+
+        // readMessage thread
+        System.out.println("go to here");
+        initComponents();
+        myInit();
     }
 
     /**
@@ -577,6 +590,16 @@ public class Dashboard extends javax.swing.JFrame {
         String newTextMessage = inputMessage.getText();
         if (!newTextMessage.equals("")) {
             System.out.println("Input message: " + newTextMessage);
+            Object[] temp = new Object[]{"sendMsg", "from mrA", "to Mr.B", "msg: " + newTextMessage};
+
+            try {
+                // write on the output stream
+                outStream.writeUTF(newTextMessage);
+            } catch (IOException e) {
+                System.out.println("Server disconnected!");
+//                        e.printStackTrace();
+            }
+
             inputMessage.setText("");
         }
     }
@@ -678,4 +701,6 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel panelSearchAndMenu1;
     // End of variables declaration//GEN-END:variables
     private javax.swing.JPanel listMessagePanel = generateEachMessageCard();
+    Socket socket;
+    DataOutputStream outStream;
 }
