@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package server;
 
 /**
  *
@@ -12,14 +11,12 @@ import Config.Env;
 import java.io.*;
 import java.util.*;
 import java.net.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 // Server class
-public class Server {
+public class Server1 {
 
     // Vector to store active clients
-    static Vector<ClientHandler> ar = new Vector<>();
+    static Vector<ClientHandler1> ar = new Vector<>();
 
     // counter for clients
     static int i = 0;
@@ -39,19 +36,18 @@ public class Server {
             System.out.println("New client request received : " + s);
 
             // obtain input and output streams
-            ObjectOutputStream dos = new ObjectOutputStream(s.getOutputStream());
-            dos.flush();
-            ObjectInputStream dis = new ObjectInputStream(s.getInputStream());
+            DataInputStream dis = new DataInputStream(s.getInputStream());
+            DataOutputStream dos = new DataOutputStream(s.getOutputStream());
 
             System.out.println("Creating a new handler for this client...");
 
             // Create a new handler object for handling this request.
-            ClientHandler mtch = new ClientHandler(s, "Client " + i, dis, dos);
+            ClientHandler1 mtch = new ClientHandler1(s, "client " + i, dis, dos);
 
             // Create a new Thread with this object.
             Thread t = new Thread(mtch);
 
-            System.out.println("Client " + i + " is connected");
+            System.out.println("Client " + i + "connected");
 
             // add this client to active clients list
             ar.add(mtch);
@@ -68,19 +64,20 @@ public class Server {
     }
 }
 
-// ClientHandler class
-class ClientHandler implements Runnable {
+//================================================//
+// ClientHandler1 class
+class ClientHandler1 implements Runnable {
 
     Scanner scn = new Scanner(System.in);
     private String name;
-    final ObjectInputStream dis;
-    final ObjectOutputStream dos;
+    final DataInputStream dis;
+    final DataOutputStream dos;
     Socket s;
     boolean isloggedin;
 
     // constructor
-    public ClientHandler(Socket s, String name,
-            ObjectInputStream dis, ObjectOutputStream dos) {
+    public ClientHandler1(Socket s, String name,
+            DataInputStream dis, DataOutputStream dos) {
         this.dis = dis;
         this.dos = dos;
         this.name = name;
@@ -91,26 +88,38 @@ class ClientHandler implements Runnable {
     @Override
     public void run() {
 
-        Object[] received;
+        String received;
         while (true) {
             try {
                 // receive the string
-                System.out.println("==================");
-                System.out.println(this.name + ":");
-                received = (Object[]) dis.readObject();
-                for (Object x : received) {
-                    System.out.println("\t" + x);
+                received = dis.readUTF();
+
+                System.out.println(received);
+                if (received.equals("logout") || dis == null || dos == null || !s.isConnected() || s.isInputShutdown() || s.isOutputShutdown()) {
+                    this.isloggedin = false;
+                    this.s.close();
+                    break;
                 }
 
-                Object[] temp = new Object[]{"status: ok", "data: msg"};
+                // break the string into message and recipient part
+                StringTokenizer st = new StringTokenizer(received, "#");
+                String MsgToSend = st.nextToken();
+                String recipient = st.nextToken();
 
-                dos.writeObject(temp);
+                // search for the recipient in the connected devices list.
+                // ar is the vector storing client of active users
+                for (ClientHandler1 mc : Server1.ar) {
+                    // if the recipient is found, write on its
+                    // output stream
+                    if (mc.name.equals(recipient) && mc.isloggedin == true) {
+                        mc.dos.writeUTF(this.name + " : " + MsgToSend);
+                        break;
+                    }
+                }
             } catch (IOException e) {
-                System.out.println(this.name + " disconnected!");
+                System.out.println("Client disconnected!");
                 break;
 //                e.printStackTrace();
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         try {
