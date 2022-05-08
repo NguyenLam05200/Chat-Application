@@ -4,8 +4,12 @@
  */
 package view;
 
-import java.security.NoSuchAlgorithmException;
+import Config.MsgDispatch;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -18,6 +22,13 @@ public class Auth extends javax.swing.JFrame {
      */
     public Auth() {
         initComponents();
+    }
+
+    public Auth(ObjectOutputStream _outStream) {
+        initComponents();
+        this.setLocationRelativeTo(null);
+
+        this.outStream = _outStream;
     }
 
     /**
@@ -53,6 +64,11 @@ public class Auth extends javax.swing.JFrame {
         jPanel14 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         Register = new javax.swing.JPanel();
+        jPanel27 = new javax.swing.JPanel();
+        jPanel28 = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        jPanel29 = new javax.swing.JPanel();
+        registerName = new javax.swing.JTextField();
         jPanel16 = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
@@ -82,7 +98,6 @@ public class Auth extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(204, 0, 204));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Chat application");
-        jLabel6.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -149,6 +164,7 @@ public class Auth extends javax.swing.JFrame {
         getContentPane().add(jPanel4, java.awt.BorderLayout.PAGE_END);
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         jPanel5.setLayout(new javax.swing.OverlayLayout(jPanel5));
 
         Login.setBackground(new java.awt.Color(255, 255, 255));
@@ -359,7 +375,63 @@ public class Auth extends javax.swing.JFrame {
         Login.setVisible(false);
 
         Register.setBackground(new java.awt.Color(255, 255, 255));
-        Register.setLayout(new java.awt.GridLayout(5, 0, 0, 10));
+        Register.setLayout(new java.awt.GridLayout(6, 0, 0, 10));
+
+        jPanel27.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel27.setLayout(new java.awt.GridLayout(2, 0));
+
+        jPanel28.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel12.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel12.setText("Full name");
+
+        javax.swing.GroupLayout jPanel28Layout = new javax.swing.GroupLayout(jPanel28);
+        jPanel28.setLayout(jPanel28Layout);
+        jPanel28Layout.setHorizontalGroup(
+            jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel28Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel28Layout.setVerticalGroup(
+            jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jPanel27.add(jPanel28);
+
+        jPanel29.setBackground(new java.awt.Color(255, 255, 255));
+
+        registerName.setBackground(new java.awt.Color(255, 255, 255));
+        registerName.setFont(new java.awt.Font("Dialog", 2, 18)); // NOI18N
+        registerName.setForeground(new java.awt.Color(102, 102, 102));
+        registerName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registerNameActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel29Layout = new javax.swing.GroupLayout(jPanel29);
+        jPanel29.setLayout(jPanel29Layout);
+        jPanel29Layout.setHorizontalGroup(
+            jPanel29Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel29Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(registerName, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel29Layout.setVerticalGroup(
+            jPanel29Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel29Layout.createSequentialGroup()
+                .addComponent(registerName)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        jPanel27.add(jPanel29);
+
+        Register.add(jPanel27);
 
         jPanel16.setBackground(new java.awt.Color(255, 255, 255));
         jPanel16.setLayout(new java.awt.GridLayout(2, 0));
@@ -620,6 +692,7 @@ public class Auth extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        handleClickButtonLogin();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void registerUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerUsernameActionPerformed
@@ -649,10 +722,14 @@ public class Auth extends javax.swing.JFrame {
         setSessionPanel("register");
     }//GEN-LAST:event_jLabel3MouseClicked
 
+    private void registerNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_registerNameActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    void setSessionPanel(String statusName) {
+    public void setSessionPanel(String statusName) {
         System.gc();
         if (statusName.equalsIgnoreCase("login")) {
             loginUsername.setText("");
@@ -660,6 +737,7 @@ public class Auth extends javax.swing.JFrame {
             Login.setVisible(true);
             Register.setVisible(false);
         } else {
+            registerName.setText("");
             registerUsername.setText("");
             registerPassword.setText("");
             registerConfirmPassword.setText((""));
@@ -669,19 +747,66 @@ public class Auth extends javax.swing.JFrame {
     }
 
     private void handleClickButtonRegister() {
-
+        String name = registerName.getText();
         String username = registerUsername.getText();
         String password = registerPassword.getText();
         String confirmPassword = registerConfirmPassword.getText();
 
-        if ("".equals(username)) {
-            JOptionPane.showMessageDialog(this, "Please fill in the username field!");
+        if ("".equals(name)) {
+            showDialog("Please fill in the full name field!");
+        } else if ("".equals(username)) {
+            showDialog("Please fill in the username field!");
         } else if ("".equals(password)) {
-            JOptionPane.showMessageDialog(this, "Please fill in the password field!");
+            showDialog("Please fill in the password field!");
         } else if (!password.equalsIgnoreCase(confirmPassword)) {
-            JOptionPane.showMessageDialog(this, "Password did not match, please try again!");
+            showDialog("Password did not match, please try again!");
         } else {
+            Object[] temp = new Object[]{MsgDispatch.REGISTER, username, password, name};
+            sendReq(temp);
+        }
+    }
 
+    private void handleClickButtonLogin() {
+        String username = loginUsername.getText();
+        String password = loginPassword.getText();
+
+        if ("".equals(username)) {
+            showDialog("Please fill in the username field!");
+        } else if ("".equals(password)) {
+            showDialog("Please fill in the password field!");
+        } else {
+            Object[] req = new Object[]{MsgDispatch.LOGIN, username, password};
+            sendReq(req);
+        }
+    }
+
+    public void showDialog(String _log) {
+        JOptionPane.showMessageDialog(this, _log);
+    }
+
+    public void registerSuccess(String _log) {
+        JOptionPane.showMessageDialog(this, _log);
+        setSessionPanel("login");
+
+//            int exit = JOptionPane.showConfirmDialog(this, _log, null, JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+//            if (exit == JOptionPane.YES_OPTION || exit == JOptionPane.CLOSED_OPTION || exit == JOptionPane.CANCEL_OPTION) {
+//                //Do smt
+//                setSessionPanel("login");
+//            }
+    }
+
+    public void showError(String _log) {
+        JOptionPane.showMessageDialog(this, _log, "Failure", JOptionPane.WARNING_MESSAGE);
+    }
+
+    private void sendReq(Object[] _req) {
+
+        try {
+            // write on the output stream
+            outStream.writeObject(_req);
+        } catch (IOException e) {
+            System.out.println("Server disconnected!");
+//                        e.printStackTrace();
         }
     }
 
@@ -728,6 +853,7 @@ public class Auth extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -754,6 +880,9 @@ public class Auth extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel25;
     private javax.swing.JPanel jPanel26;
+    private javax.swing.JPanel jPanel27;
+    private javax.swing.JPanel jPanel28;
+    private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -764,7 +893,26 @@ public class Auth extends javax.swing.JFrame {
     private javax.swing.JPasswordField loginPassword;
     private javax.swing.JTextField loginUsername;
     private javax.swing.JPasswordField registerConfirmPassword;
+    private javax.swing.JTextField registerName;
     private javax.swing.JPasswordField registerPassword;
     private javax.swing.JTextField registerUsername;
     // End of variables declaration//GEN-END:variables
+
+    ObjectOutputStream outStream;
+    ObjectInputStream dis;
+
+    public javax.swing.JTextField getLoginUsername() {
+        return loginUsername;
+    }
+
+    // Handle response:
+//    public static void handleResponse(Object[] res) {
+//        Auth x = new Auth();
+//        SwingUtilities.invokeLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                this.getClass().showDialog(" ");
+//            }
+//        });
+//    }
 }

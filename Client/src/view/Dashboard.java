@@ -590,7 +590,7 @@ public class Dashboard extends javax.swing.JFrame {
         String newTextMessage = inputMessage.getText();
         if (!newTextMessage.equals("")) {
             System.out.println("Input message: " + newTextMessage);
-            Object[] temp = new Object[]{"sendMsg", "from mrA", "to Mr.B", "msg: " + newTextMessage};
+            Object[] temp = new Object[]{"REGISTER", "from mrA", "to Mr.B", "msg: " + newTextMessage};
 
             try {
                 // write on the output stream

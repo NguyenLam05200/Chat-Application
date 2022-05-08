@@ -9,6 +9,7 @@ package server;
  * @author holohoi
  */
 import Config.Env;
+import Config.MsgDispatch;
 import java.io.*;
 import java.util.*;
 import java.net.*;
@@ -92,23 +93,33 @@ class ClientHandler implements Runnable {
     public void run() {
 
         Object[] received;
+        Object[] res;
         while (true) {
             try {
                 // receive the string
                 System.out.println("==================");
-                System.out.println(this.name + ":");
                 received = (Object[]) dis.readObject();
-                for (Object x : received) {
-                    System.out.println("\t" + x);
+
+                System.out.print(this.name + ":");
+                String dispatchMsg = received[0].toString();
+                System.out.println(dispatchMsg);
+
+                switch (dispatchMsg) {
+                    case MsgDispatch.LOGIN:
+                        res = HandleRequestAuth.login(received, dispatchMsg);
+                        dos.writeObject(res);
+                        break;
+                    case MsgDispatch.REGISTER:
+                        res = HandleRequestAuth.register(received, dispatchMsg);
+                        dos.writeObject(res);
+                        break;
+                    default:
+                        throw new AssertionError();
                 }
 
-                Object[] temp = new Object[]{"status: ok", "data: msg"};
-
-                dos.writeObject(temp);
             } catch (IOException e) {
                 System.out.println(this.name + " disconnected!");
                 break;
-//                e.printStackTrace();
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
             }

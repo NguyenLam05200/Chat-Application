@@ -9,17 +9,18 @@ package controller;
  * @author holohoi
  */
 import Config.Env;
+import Config.MsgDispatch;
 import java.io.*;
 import java.net.*;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import view.Dashboard;
+import view.Auth;
 
 public class Client {
 
+    static Auth auth;
+
     public static void main(String args[]) throws UnknownHostException, IOException {
-        Scanner scn = new Scanner(System.in);
 
         // establish the connection
         Socket s = new Socket(Env.IPAddress, Env.Port);
@@ -29,9 +30,12 @@ public class Client {
         dos.flush();
         ObjectInputStream dis = new ObjectInputStream(s.getInputStream());
 
+        auth = new Auth(dos);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Dashboard(s, dos).setVisible(true);
+//                new Dashboard(s, dos).setVisible(true);
+                auth.setVisible(true);
+//                new Auth(dos).setVisible(true);
             }
         });
 
@@ -39,15 +43,22 @@ public class Client {
         Thread readMessage = new Thread(new Runnable() {
             @Override
             public void run() {
-
+                Object[] res;
                 while (true) {
                     try {
                         // read the message sent to this client
-                        Object[] msg = (Object[]) dis.readObject();
-                        for (Object x : msg) {
-                            System.out.println(x);
+                        res = (Object[]) dis.readObject();
+                        String dispatchMsg = res[0].toString();
+                        switch (dispatchMsg) {
+                            case MsgDispatch.LOGIN:
+                                handleResponseAuth.login(res);
+                                break;
+                            case MsgDispatch.REGISTER:
+                                handleResponseAuth.register(res);
+                                break;
+                            default:
+                                throw new AssertionError();
                         }
-//                        System.out.println(msg);
                     } catch (IOException e) {
                         System.out.println("break in readMsg");
                         System.out.println("Server disconnected!");
