@@ -14,11 +14,15 @@ import java.io.*;
 import java.net.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import storage.User;
 import view.Auth;
+import view.Dashboard;
 
 public class Client {
 
+    static User user;
     static Auth auth;
+    static Dashboard dashboard;
 
     public static void main(String args[]) throws UnknownHostException, IOException {
 

@@ -2,10 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package entity;
+package storage;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
 
 /**
@@ -32,17 +30,16 @@ public class User implements java.io.Serializable {
         this.username = username;
         this.password = password;
         this.name = name;
-        this.email = null;
-        Long datetime = System.currentTimeMillis();
-        Timestamp timestamp = new Timestamp(datetime);
-        this.lastSeen = timestamp;
-        this.image = null;
-        this.gender = true;
-        this.isActive = true;
     }
 
-    public Object[] getObject() {
-        return new Object[]{id, name, email, lastSeen.toString(), image, gender, isActive};
+    public User(Object[] res) {
+        this.id = Integer.parseInt(res[3].toString());
+        this.name = res[4].toString();
+        this.email = res[5] == null ? null : res[5].toString();
+        this.lastSeen = res[6] == null ? null : Timestamp.valueOf(res[6].toString());
+        this.image = res[7] == null ? null : res[5].toString();
+        this.gender = Boolean.parseBoolean(res[8].toString());
+        this.isActive = Boolean.parseBoolean(res[9].toString());
     }
 
     public int getId() {

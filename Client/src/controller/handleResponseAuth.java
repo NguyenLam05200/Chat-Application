@@ -5,6 +5,11 @@
 package controller;
 
 import static controller.Client.auth;
+import static controller.Client.user;
+import static controller.Client.dashboard;
+
+import storage.User;
+import view.Dashboard;
 
 /**
  *
@@ -28,10 +33,19 @@ public class handleResponseAuth {
         if (status.equalsIgnoreCase("Error")) {
             auth.showError(msg);
         } else if (status.equalsIgnoreCase("Ok")) {
-            int userID = Integer.parseInt(res[3].toString());
-            String name = res[4].toString();
-            System.out.println("id: " + userID + "; name: " + name);
-//            auth.registerSuccess(msg);
+//            int userID = Integer.parseInt(res[3].toString());
+//            String name = res[4].toString();
+//            System.out.println("id: " + userID + "; name: " + name);
+
+            user = new User(res);
+            dashboard = new Dashboard();
+
+            auth.loginSuccess(msg);
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    dashboard.setVisible(true);
+                }
+            });
         }
     }
 }

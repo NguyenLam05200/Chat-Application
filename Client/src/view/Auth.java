@@ -5,11 +5,12 @@
 package view;
 
 import Config.MsgDispatch;
+import java.awt.Component;
+import java.awt.Container;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 /**
  *
@@ -46,6 +47,7 @@ public class Auth extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
+        loadingLabel = new javax.swing.JLabel();
         Login = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
@@ -167,6 +169,12 @@ public class Auth extends javax.swing.JFrame {
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         jPanel5.setLayout(new javax.swing.OverlayLayout(jPanel5));
 
+        loadingLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        loadingLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/loading.gif"))); // NOI18N
+        loadingLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jPanel5.add(loadingLabel);
+        loadingLabel.setVisible(false);
+
         Login.setBackground(new java.awt.Color(255, 255, 255));
         Login.setLayout(new java.awt.GridLayout(5, 0, 0, 10));
 
@@ -180,7 +188,7 @@ public class Auth extends javax.swing.JFrame {
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 56, Short.MAX_VALUE)
+            .addGap(0, 69, Short.MAX_VALUE)
         );
 
         Login.add(jPanel6);
@@ -746,7 +754,34 @@ public class Auth extends javax.swing.JFrame {
         }
     }
 
+    public void enableComponents(Container container, boolean enable) {
+        Component[] components = container.getComponents();
+        for (Component component : components) {
+            component.setEnabled(enable);
+            if (component instanceof Container) {
+                enableComponents((Container) component, enable);
+            }
+        }
+    }
+
+    public void loadingProcess(boolean isLoading) {
+        Container curContainer;
+        if (Login.isVisible()) {
+            curContainer = Login;
+        } else {
+            curContainer = Register;
+        }
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                loadingLabel.setVisible(isLoading);
+                enableComponents(curContainer, !isLoading);
+            }
+        });
+    }
+
     private void handleClickButtonRegister() {
+        loadingProcess(true);
+
         String name = registerName.getText();
         String username = registerUsername.getText();
         String password = registerPassword.getText();
@@ -767,6 +802,7 @@ public class Auth extends javax.swing.JFrame {
     }
 
     private void handleClickButtonLogin() {
+        loadingProcess(true);
         String username = loginUsername.getText();
         String password = loginPassword.getText();
 
@@ -778,14 +814,21 @@ public class Auth extends javax.swing.JFrame {
             Object[] req = new Object[]{MsgDispatch.LOGIN, username, password};
             sendReq(req);
         }
+
     }
 
     public void showDialog(String _log) {
         JOptionPane.showMessageDialog(this, _log);
+        loadingProcess(false);
+    }
+
+    public void loginSuccess(String _log) {
+        loadingProcess(false);
+        dispose();
     }
 
     public void registerSuccess(String _log) {
-        JOptionPane.showMessageDialog(this, _log);
+        showDialog(_log);
         setSessionPanel("login");
 
 //            int exit = JOptionPane.showConfirmDialog(this, _log, null, JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
@@ -797,6 +840,7 @@ public class Auth extends javax.swing.JFrame {
 
     public void showError(String _log) {
         JOptionPane.showMessageDialog(this, _log, "Failure", JOptionPane.WARNING_MESSAGE);
+        loadingProcess(false);
     }
 
     private void sendReq(Object[] _req) {
@@ -890,6 +934,7 @@ public class Auth extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JLabel loadingLabel;
     private javax.swing.JPasswordField loginPassword;
     private javax.swing.JTextField loginUsername;
     private javax.swing.JPasswordField registerConfirmPassword;
@@ -901,18 +946,4 @@ public class Auth extends javax.swing.JFrame {
     ObjectOutputStream outStream;
     ObjectInputStream dis;
 
-    public javax.swing.JTextField getLoginUsername() {
-        return loginUsername;
-    }
-
-    // Handle response:
-//    public static void handleResponse(Object[] res) {
-//        Auth x = new Auth();
-//        SwingUtilities.invokeLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                this.getClass().showDialog(" ");
-//            }
-//        });
-//    }
 }

@@ -9,6 +9,7 @@ import entity.User;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import util.ObjectHanlde;
 import util.handlePassword;
 
 /**
@@ -51,7 +52,7 @@ public class HandleRequestAuth {
         return res;
     }
 
-    public static Object[] login(Object[] req, String _dispatchMsg) {
+    public static Object[] login(Object[] req, String _dispatchMsg, ClientHandler clientHandler) {
         // init response:
         Object[] res;
         String dispatchMsg = _dispatchMsg;
@@ -74,13 +75,9 @@ public class HandleRequestAuth {
             if (user.getPassword().equals(password)) {
                 status = "Ok";
                 msg = "Login Successfully!";
-                res = new Object[]{
-                    dispatchMsg,
-                    status,
-                    msg,
-                    user.getId(),
-                    user.getName()
-                };
+                Object[] res1 = new Object[]{dispatchMsg, status, msg};
+                Object[] res2 = user.getObject();
+                res = ObjectHanlde.concatObject(res1, res2);
                 return res;
             } else {
                 msg = "Password is not correct, please try again!";

@@ -28,8 +28,8 @@ public class Dashboard extends javax.swing.JFrame {
     public Dashboard() {
         initComponents();
         myInit();
-        System.out.println("width: " + jLabel4.getWidth());
-        System.out.println("height: " + jLabel4.getHeight());
+//        System.out.println("width: " + jLabel4.getWidth());
+//        System.out.println("height: " + jLabel4.getHeight());
 
     }
 

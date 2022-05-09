@@ -10,6 +10,7 @@ package server;
  */
 import Config.Env;
 import Config.MsgDispatch;
+import entity.User;
 import java.io.*;
 import java.util.*;
 import java.net.*;
@@ -47,7 +48,7 @@ public class Server {
             System.out.println("Creating a new handler for this client...");
 
             // Create a new handler object for handling this request.
-            ClientHandler mtch = new ClientHandler(s, "Client " + i, dis, dos);
+            ClientHandler mtch = new ClientHandler(s, dis, dos);
 
             // Create a new Thread with this object.
             Thread t = new Thread(mtch);
@@ -66,72 +67,5 @@ public class Server {
             i++;
 
         }
-    }
-}
-
-// ClientHandler class
-class ClientHandler implements Runnable {
-
-    Scanner scn = new Scanner(System.in);
-    private String name;
-    final ObjectInputStream dis;
-    final ObjectOutputStream dos;
-    Socket s;
-    boolean isloggedin;
-
-    // constructor
-    public ClientHandler(Socket s, String name,
-            ObjectInputStream dis, ObjectOutputStream dos) {
-        this.dis = dis;
-        this.dos = dos;
-        this.name = name;
-        this.s = s;
-        this.isloggedin = true;
-    }
-
-    @Override
-    public void run() {
-
-        Object[] received;
-        Object[] res;
-        while (true) {
-            try {
-                // receive the string
-                System.out.println("==================");
-                received = (Object[]) dis.readObject();
-
-                System.out.print(this.name + ":");
-                String dispatchMsg = received[0].toString();
-                System.out.println(dispatchMsg);
-
-                switch (dispatchMsg) {
-                    case MsgDispatch.LOGIN:
-                        res = HandleRequestAuth.login(received, dispatchMsg);
-                        dos.writeObject(res);
-                        break;
-                    case MsgDispatch.REGISTER:
-                        res = HandleRequestAuth.register(received, dispatchMsg);
-                        dos.writeObject(res);
-                        break;
-                    default:
-                        throw new AssertionError();
-                }
-
-            } catch (IOException e) {
-                System.out.println(this.name + " disconnected!");
-                break;
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        try {
-            // closing resources
-            this.dis.close();
-            this.dos.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 }
