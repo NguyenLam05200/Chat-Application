@@ -44,7 +44,7 @@ public class ClientHandler implements Runnable {
     public void run() {
 
         Object[] received;
-        Object[] res;
+        Object[][] res;
         while (true) {
             try {
                 // receive the string
@@ -62,6 +62,10 @@ public class ClientHandler implements Runnable {
                         break;
                     case MsgDispatch.REGISTER:
                         res = HandleRequestAuth.register(received, dispatchMsg);
+                        dos.writeObject(res);
+                        break;
+                    case MsgDispatch.INIT_DASHBOARD:
+                        res = HandleRequestAuth.initDasboard(user, dispatchMsg);
                         dos.writeObject(res);
                         break;
                     default:

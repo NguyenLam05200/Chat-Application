@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package entity;
+package storage;
 
 import java.sql.Timestamp;
 
@@ -21,6 +21,16 @@ public class Message implements java.io.Serializable {
     private Timestamp seenAt;
 
     public Message() {
+    }
+
+    public Message(Object[] res, User _sendBy, User _sendTo) {
+        this.id = Integer.parseInt(res[0].toString());
+        this.content = res[1].toString();
+        this.sendAt = res[2] == null ? null : Timestamp.valueOf(res[2].toString());
+        this.sendBy = _sendBy;
+        this.sendTo = _sendTo;
+        this.isAvailable = Boolean.parseBoolean(res[5].toString());
+        this.seenAt = res[6] == null ? null : Timestamp.valueOf(res[6].toString());
     }
 
     public Message(String content, User sendBy, User sendTo) {

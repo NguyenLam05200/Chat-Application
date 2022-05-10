@@ -12,5 +12,6 @@ public class MsgDispatch {
 
     public static final String LOGIN = "LOGIN";
     public static final String REGISTER = "REGISTER";
+    public static final String INIT_DASHBOARD = "INIT_DASHBOARD";
 
 }

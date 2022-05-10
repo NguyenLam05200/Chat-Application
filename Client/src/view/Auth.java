@@ -823,6 +823,11 @@ public class Auth extends javax.swing.JFrame {
     }
 
     public void loginSuccess(String _log) {
+        Object[] req = new Object[]{MsgDispatch.INIT_DASHBOARD};
+        sendReq(req);
+    }
+
+    public void initDashboardSuccess() {
         loadingProcess(false);
         dispose();
     }

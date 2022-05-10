@@ -4,11 +4,16 @@
  */
 package server;
 
+import dao.MessageDAO;
+import static dao.MessageDAO.getListMsgContact;
 import dao.UserDAO;
+import entity.Message;
 import entity.User;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.util.Pair;
 import util.ObjectHanlde;
 import util.handlePassword;
 
@@ -18,9 +23,9 @@ import util.handlePassword;
  */
 public class HandleRequestAuth {
 
-    public static Object[] register(Object[] req, String _dispatchMsg) {
+    public static Object[][] register(Object[] req, String _dispatchMsg) {
         // init response:
-        Object[] res;
+        Object[][] res = new Object[1][];
         String dispatchMsg = _dispatchMsg;
         String status = "Error";
         String msg;
@@ -48,13 +53,13 @@ public class HandleRequestAuth {
                 msg = "Regiter fail!";
             }
         }
-        res = new Object[]{dispatchMsg, status, msg};
+        res[0] = new Object[]{dispatchMsg, status, msg};
         return res;
     }
 
-    public static Object[] login(Object[] req, String _dispatchMsg, ClientHandler clientHandler) {
+    public static Object[][] login(Object[] req, String _dispatchMsg, ClientHandler clientHandler) {
         // init response:
-        Object[] res;
+        Object[][] res = new Object[1][];
         String dispatchMsg = _dispatchMsg;
         String status = "Error";
         String msg;
@@ -73,17 +78,37 @@ public class HandleRequestAuth {
                 Logger.getLogger(HandleRequestAuth.class.getName()).log(Level.SEVERE, null, ex);
             }
             if (user.getPassword().equals(password)) {
+                clientHandler.setUser(user);
+
                 status = "Ok";
                 msg = "Login Successfully!";
                 Object[] res1 = new Object[]{dispatchMsg, status, msg};
                 Object[] res2 = user.getObject();
-                res = ObjectHanlde.concatObject(res1, res2);
+                res[0] = ObjectHanlde.concatObject(res1, res2);
                 return res;
             } else {
                 msg = "Password is not correct, please try again!";
             }
         }
-        res = new Object[]{dispatchMsg, status, msg};
+        res[0] = new Object[]{dispatchMsg, status, msg};
         return res;
     }
+
+    public static Object[][] initDasboard(User user, String _dispatchMsg) {
+        Object[][] res;
+
+        Pair pair = getListMsgContact(user);
+        List<Message> listMsg = (List<Message>) pair.getKey();
+        List<User> listContacts = (List<User>) pair.getValue();
+
+        int size = listMsg.size();
+        res = new Object[size * 2 + 1][];
+        res[0] = new Object[]{_dispatchMsg};
+        for (int i = 1; i < size + 1; i++) {
+            res[i] = listMsg.get(i - 1).getObject();
+            res[i + size] = listContacts.get(i - 1).getObject();
+        }
+        return res;
+    }
+
 }

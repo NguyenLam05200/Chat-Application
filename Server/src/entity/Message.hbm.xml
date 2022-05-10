@@ -6,13 +6,13 @@
     <class name="entity.Message" table="messages" catalog="chat">
         <id name="id" type="integer">
             <column name="id" length="11" />
-            <generator class="assigned" />
+            <generator class="increment" />
         </id>
         <property name="content" type="string">
-            <column name="name" />
+            <column name="content" />
         </property>
         <property name="sendAt" type="timestamp">
-            <column name="createAt" />
+            <column name="sendAt" />
         </property>
         <many-to-one name="sendBy" class="entity.User" >
             <column name="sendBy" />
@@ -22,6 +22,9 @@
         </many-to-one>
         <property name="isAvailable" type="boolean">
             <column name="isAvailable" />
+        </property>
+        <property name="seenAt" type="timestamp">
+            <column name="seenAt" />
         </property>
     </class>
 </hibernate-mapping>

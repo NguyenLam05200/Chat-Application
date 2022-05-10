@@ -41,6 +41,28 @@ public class UserDAO {
 //        session.getTransaction().commit();
 //        return listUser;
 //    }
+    public static User findOneById(int _id) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+        String hql = "from User where id = :id";
+        Query query = session.createQuery(hql);
+        query.setParameter("id", _id);
+        query.uniqueResult();
+
+        boolean isNotResult = query.list().isEmpty();
+
+        if (isNotResult) {
+//            System.out.println("Not result");
+            session.getTransaction().commit();
+            return null;
+        } else {
+//            System.out.println("Have result");
+            User temp = (User) query.list().get(0);
+            session.getTransaction().commit();
+            return temp;
+        }
+    }
+
     public static User findOneByUsername(String _username) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
@@ -93,7 +115,9 @@ public class UserDAO {
     }
 
     public static void main(String[] args) throws NoSuchAlgorithmException {
-        boolean isAdded = addUser(new User("holohoi", "1", "Nguyen Van A"));
-        System.out.println(isAdded);
+        List<User> temp = getListUser();
+        for (User x : temp) {
+            System.out.println(x.getName());
+        }
     }
 }

@@ -11,7 +11,10 @@ package dao;
 import entity.Message;
 import entity.User;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import javafx.util.Pair;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -78,6 +81,85 @@ public class MessageDAO {
         return new Pair<>(deliveryMessages, receiveMessages);
     }
 
+    public static List<Message> getMsgRelate(User user) {
+        if (user == null) {
+            System.out.println("Not user");
+            return null;
+        } else {
+            List<Message> listMessage = null;
+            Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            String hql = "from Message where isAvailable = true and (sendTo = :input or sendBy = :input)";
+            Query query = session.createQuery(hql);
+            query.setParameter("input", user);
+
+            listMessage = query.list();
+            session.getTransaction().commit();
+
+            return listMessage;
+        }
+    }
+
+    public static List<Message> getMsgRelateSoon(User user) {
+        if (user == null) {
+            System.out.println("Not user");
+            return null;
+        } else {
+            List<Message> listMessage = null;
+            Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            String hql = "  FROM Message\n"
+                    + "  WHERE sendAt in ( SELECT MAX(sendAt)\n"
+                    + "                      FROM Message\n"
+                    + "                      WHERE sendBy = :input or sendTo = :input\n"
+                    + "                      GROUP BY sendBy, sendTo)";
+            Query query = session.createQuery(hql);
+            query.setParameter("input", user);
+
+            listMessage = query.list();
+            session.getTransaction().commit();
+
+            return listMessage;
+        }
+    }
+
+    public static Pair getListMsgContact(User user) {
+        List<Message> listMsg = getMsgRelateSoon(user);
+
+        Set<Integer> set = new LinkedHashSet<>();
+
+        for (Message msg : listMsg) {
+            if (msg.getSendBy().getId() != user.getId()) {
+                set.add(msg.getSendBy().getId());
+            } else {
+                set.add(msg.getSendTo().getId());
+            }
+        }
+
+        List<User> contacts = new ArrayList<>();
+        for (int id : set) {
+            User u = UserDAO.findOneById(id);
+            contacts.add(0, u);
+        }
+
+        List<Message> temp = new ArrayList<>();
+        int size = listMsg.size();
+        for (int i = size - 1; i >= 0; i--) {
+            Message x = listMsg.get(i);
+            int sendBy = x.getSendBy().getId();
+            int sendTo = x.getSendTo().getId();
+            if (sendBy != user.getId() && set.contains(sendBy)) {
+                temp.add(x);
+                set.remove(sendBy);
+            } else if (set.contains(sendTo)) {
+                temp.add(x);
+                set.remove(sendTo);
+            }
+        }
+
+        return new Pair<>(temp, contacts);
+    }
+
     public static boolean addMessage(Message msg) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
@@ -93,5 +175,21 @@ public class MessageDAO {
     }
 
     public static void main(String[] args) throws NoSuchAlgorithmException {
+
+        User user = UserDAO.findOneByUsername("a");
+
+        Pair pair = getListMsgContact(user);
+        List<Message> listMsg = (List<Message>) pair.getKey();
+        List<User> listContacts = (List<User>) pair.getValue();
+        System.out.println("stop");
+//        List<Message> listMsg = getMsgRelateSoon(user);
+
+        for (Message x : listMsg) {
+            System.out.println(x.getSendBy().getId() + " -> " + x.getSendTo().getId());
+        }
+        for (User x : listContacts) {
+            System.out.println("user: " + x.getId());
+        }
+
     }
 }

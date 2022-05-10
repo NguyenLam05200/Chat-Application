@@ -42,6 +42,16 @@ public class User implements java.io.Serializable {
         this.isActive = Boolean.parseBoolean(res[9].toString());
     }
 
+    public User(Object[] res, boolean isContact) {
+        this.id = Integer.parseInt(res[0].toString());
+        this.name = res[1].toString();
+        this.email = res[2] == null ? null : res[2].toString();
+        this.lastSeen = res[3] == null ? null : Timestamp.valueOf(res[3].toString());
+        this.image = res[4] == null ? null : res[4].toString();
+        this.gender = Boolean.parseBoolean(res[5].toString());
+        this.isActive = Boolean.parseBoolean(res[6].toString());
+    }
+
     public int getId() {
         return id;
     }

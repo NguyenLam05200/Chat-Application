@@ -47,18 +47,21 @@ public class Client {
         Thread readMessage = new Thread(new Runnable() {
             @Override
             public void run() {
-                Object[] res;
+                Object[][] res;
                 while (true) {
                     try {
                         // read the message sent to this client
-                        res = (Object[]) dis.readObject();
-                        String dispatchMsg = res[0].toString();
+                        res = (Object[][]) dis.readObject();
+                        String dispatchMsg = res[0][0].toString();
                         switch (dispatchMsg) {
                             case MsgDispatch.LOGIN:
-                                handleResponseAuth.login(res);
+                                handleResponseAuth.login(res[0]);
                                 break;
                             case MsgDispatch.REGISTER:
-                                handleResponseAuth.register(res);
+                                handleResponseAuth.register(res[0]);
+                                break;
+                            case MsgDispatch.INIT_DASHBOARD:
+                                handleResponseAuth.initDashboard(res);
                                 break;
                             default:
                                 throw new AssertionError();
