@@ -4,10 +4,11 @@
  */
 package controller;
 
-import static controller.Client.auth;
+import static controller.Client.*;
 import static controller.Client.user;
 import static controller.Client.dashboard;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import storage.Message;
 
@@ -49,8 +50,9 @@ public class handleResponseAuth {
     public static void initDashboard(Object[][] res) {
         int size = (res.length - 1) / 2; // 5 - 1 = 4/2 = 2
 
-        List<Message> listMsgContacts = new ArrayList<>();
-        List<User> listContacts = new ArrayList<>();
+        listMsgContacts = new ArrayList<>();
+        listContacts = new ArrayList<>();
+        setContacts = new LinkedHashSet<>();
 
         for (int i = 1; i <= size; i++) {
             System.out.println("==========================");
@@ -66,6 +68,7 @@ public class handleResponseAuth {
                 contact = new User(res[i + size], true);
                 msg = new Message(eachMsg, contact, user);
             }
+            setContacts.add(contact.getId());
             listMsgContacts.add(msg);
             listContacts.add(contact);
         }
@@ -75,10 +78,10 @@ public class handleResponseAuth {
             System.out.println("Contact: " + listContacts.get(i).getId());
             System.out.println("Contact: " + listMsgContacts.get(i).getContent());
         }
+        auth.initDashboardSuccess();
 
         dashboard = new Dashboard();
 
-        auth.initDashboardSuccess();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 dashboard.setVisible(true);

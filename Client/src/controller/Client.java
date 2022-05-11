@@ -12,17 +12,23 @@ import Config.Env;
 import Config.MsgDispatch;
 import java.io.*;
 import java.net.*;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import storage.Message;
 import storage.User;
 import view.Auth;
 import view.Dashboard;
 
 public class Client {
 
-    static User user;
-    static Auth auth;
-    static Dashboard dashboard;
+    public static User user;
+    public static Auth auth;
+    public static Dashboard dashboard;
+    public static List<Message> listMsgContacts;
+    public static List<User> listContacts;
+    public static Set<Integer> setContacts;
 
     public static void main(String args[]) throws UnknownHostException, IOException {
 

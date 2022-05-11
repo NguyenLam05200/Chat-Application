@@ -30,6 +30,8 @@ public class Auth extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
 
         this.outStream = _outStream;
+
+        setSessionPanel("login");
     }
 
     /**
@@ -188,7 +190,7 @@ public class Auth extends javax.swing.JFrame {
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 69, Short.MAX_VALUE)
+            .addGap(0, 58, Short.MAX_VALUE)
         );
 
         Login.add(jPanel6);
@@ -221,8 +223,8 @@ public class Auth extends javax.swing.JFrame {
         jPanel10.setBackground(new java.awt.Color(255, 255, 255));
 
         loginUsername.setBackground(new java.awt.Color(255, 255, 255));
-        loginUsername.setFont(new java.awt.Font("Dialog", 2, 18)); // NOI18N
-        loginUsername.setForeground(new java.awt.Color(102, 102, 102));
+        loginUsername.setFont(new java.awt.Font("DialogInput", 1, 18)); // NOI18N
+        loginUsername.setForeground(new java.awt.Color(0, 0, 0));
         loginUsername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loginUsernameActionPerformed(evt);
@@ -413,8 +415,8 @@ public class Auth extends javax.swing.JFrame {
         jPanel29.setBackground(new java.awt.Color(255, 255, 255));
 
         registerName.setBackground(new java.awt.Color(255, 255, 255));
-        registerName.setFont(new java.awt.Font("Dialog", 2, 18)); // NOI18N
-        registerName.setForeground(new java.awt.Color(102, 102, 102));
+        registerName.setFont(new java.awt.Font("DialogInput", 1, 18)); // NOI18N
+        registerName.setForeground(new java.awt.Color(0, 0, 0));
         registerName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 registerNameActionPerformed(evt);
@@ -469,8 +471,8 @@ public class Auth extends javax.swing.JFrame {
         jPanel18.setBackground(new java.awt.Color(255, 255, 255));
 
         registerUsername.setBackground(new java.awt.Color(255, 255, 255));
-        registerUsername.setFont(new java.awt.Font("Dialog", 2, 18)); // NOI18N
-        registerUsername.setForeground(new java.awt.Color(102, 102, 102));
+        registerUsername.setFont(new java.awt.Font("DialogInput", 1, 18)); // NOI18N
+        registerUsername.setForeground(new java.awt.Color(0, 0, 0));
         registerUsername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 registerUsernameActionPerformed(evt);
@@ -735,6 +737,7 @@ public class Auth extends javax.swing.JFrame {
     }//GEN-LAST:event_registerNameActionPerformed
 
     /**
+     * @param statusName
      * @param args the command line arguments
      */
     public void setSessionPanel(String statusName) {
@@ -744,7 +747,7 @@ public class Auth extends javax.swing.JFrame {
             loginPassword.setText("");
             Login.setVisible(true);
             Register.setVisible(false);
-        } else {
+        } else if (statusName.equalsIgnoreCase("register")) {
             registerName.setText("");
             registerUsername.setText("");
             registerPassword.setText("");
@@ -949,6 +952,4 @@ public class Auth extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     ObjectOutputStream outStream;
-    ObjectInputStream dis;
-
 }
