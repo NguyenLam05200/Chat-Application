@@ -4,8 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/holohoi/Documents/NetBeansProjects/Chat-javaNetworking/Chat-Application/Client/src/controller/Client.java</file>
+            <file>file:/C:/Users/holohoi/Documents/NetBeansProjects/Chat-javaNetworking/Chat-Application/Client/src/assets/user.png</file>
             <file>file:/C:/Users/holohoi/Documents/NetBeansProjects/Chat-javaNetworking/Chat-Application/Client/src/view/Dashboard.java</file>
+            <file>file:/C:/Users/holohoi/Documents/NetBeansProjects/Chat-javaNetworking/Chat-Application/Client/src/view/eachMessage.java</file>
             <file>file:/C:/Users/holohoi/Documents/NetBeansProjects/Chat-javaNetworking/Chat-Application/Client/src/view/Auth.java</file>
+            <file>file:/C:/Users/holohoi/Documents/NetBeansProjects/Chat-javaNetworking/Chat-Application/Client/src/view/ListMsgContactPanel.java</file>
+            <file>file:/C:/Users/holohoi/Documents/NetBeansProjects/Chat-javaNetworking/Chat-Application/Client/src/assets/_user.png</file>
         </group>
     </open-files>
 </project-private>
