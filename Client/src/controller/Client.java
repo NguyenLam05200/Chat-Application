@@ -30,6 +30,9 @@ public class Client {
     public static List<User> listContacts;
     public static Set<Integer> setContacts;
 
+    public static User curContact;
+    public static List<Message> curListMsgChat;
+
     public static void main(String args[]) throws UnknownHostException, IOException {
 
         // establish the connection
@@ -68,6 +71,19 @@ public class Client {
                                 break;
                             case MsgDispatch.INIT_DASHBOARD:
                                 handleResponseAuth.initDashboard(res);
+                                auth.initDashboardSuccess();
+
+                                dashboard = new Dashboard(dos);
+
+                                java.awt.EventQueue.invokeLater(new Runnable() {
+                                    public void run() {
+                                        dashboard.setVisible(true);
+                                    }
+                                });
+                                break;
+                            case MsgDispatch.GET_LIST_MSG_CHAT:
+                                handleResponseOther.getListMsgChat(res);
+                                dashboard.renderListMsgChat();
                                 break;
                             default:
                                 throw new AssertionError();

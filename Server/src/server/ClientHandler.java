@@ -68,6 +68,10 @@ public class ClientHandler implements Runnable {
                         res = HandleRequestAuth.initDasboard(user, dispatchMsg);
                         dos.writeObject(res);
                         break;
+                    case MsgDispatch.GET_LIST_MSG_CHAT:
+                        res = HandleRequestOther.getListMsgChat(received, dispatchMsg, user);
+                        dos.writeObject(res);
+                        break;
                     default:
                         throw new AssertionError();
                 }

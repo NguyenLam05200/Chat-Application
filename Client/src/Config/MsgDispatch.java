@@ -13,5 +13,5 @@ public class MsgDispatch {
     public static final String LOGIN = "LOGIN";
     public static final String REGISTER = "REGISTER";
     public static final String INIT_DASHBOARD = "INIT_DASHBOARD";
-
+    public static final String GET_LIST_MSG_CHAT = "GET_LIST_MSG_CHAT";
 }

@@ -55,7 +55,6 @@ public class handleResponseAuth {
         setContacts = new LinkedHashSet<>();
 
         for (int i = 1; i <= size; i++) {
-            System.out.println("==========================");
 
             Object[] eachMsg = res[i];
             Message msg;
@@ -73,19 +72,5 @@ public class handleResponseAuth {
             listContacts.add(contact);
         }
 
-        for (int i = 0; i < size; i++) {
-            System.out.println("==============");
-            System.out.println("Contact: " + listContacts.get(i).getId());
-            System.out.println("Contact: " + listMsgContacts.get(i).getContent());
-        }
-        auth.initDashboardSuccess();
-
-        dashboard = new Dashboard();
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                dashboard.setVisible(true);
-            }
-        });
     }
 }

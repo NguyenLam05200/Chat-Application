@@ -4,6 +4,7 @@
  */
 package view;
 
+import controller.Client;
 import java.awt.Image;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -15,7 +16,7 @@ import storage.User;
  *
  * @author holohoi
  */
-public class eachMessage extends javax.swing.JPanel {
+public class EachMsgContact extends javax.swing.JPanel {
 
     int id;
     User contact;
@@ -28,18 +29,18 @@ public class eachMessage extends javax.swing.JPanel {
 
     boolean isClicked = false;
 
-    public eachMessage() {
+    public EachMsgContact() {
     }
 
-    public eachMessage(Message msgContact, User contact, int index) {
+    public EachMsgContact(Message msgContact, User _contact, int index) {
         this.id = index;
-        this.contact = contact;
+        this.contact = _contact;
         this.msgContact = msgContact;
         this.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         avatar = new javax.swing.JLabel();
         avatar.setForeground(new java.awt.Color(0, 0, 0));
-        avatar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        avatar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         avatar.setPreferredSize(new java.awt.Dimension(34, 34));
 
         nameContact = new javax.swing.JLabel();
@@ -55,26 +56,30 @@ public class eachMessage extends javax.swing.JPanel {
 
         contentMsgContact.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
-        init();
+        init(_contact);
     }
 
-    private void init() {
+    private void init(User _contact) {
         setColorNotClick();
         this.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
 //                handleClickEachMsgContact(this.getName());
 //                System.out.println("Click contact " + contact.getName());
+
+                Client.dashboard.requestListMsgChat(contact.getId());
+                Client.curContact = _contact;
+
                 int beforeClick = ListMsgContactPanel.curClick;
                 if (beforeClick != -1) {
                     ListMsgContactPanel.listMsgContactPanel.get(beforeClick).setColorNotClick();
                 }
-                ListMsgContactPanel.curClick = id;
+                ListMsgContactPanel.setCurClick(id);
                 setColorClick();
             }
         });
 
 //        avatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/user.png"))); // NOI18N
-        avatar.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/_user.png")).getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH)));
+        avatar.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/user.png")).getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH)));
 
         nameContact.setText(contact.getName());
 
@@ -95,7 +100,7 @@ public class eachMessage extends javax.swing.JPanel {
         eachMessageLayout.setHorizontalGroup(
                 eachMessageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(eachMessageLayout.createSequentialGroup()
-                                .addComponent(avatar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(avatar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(eachMessageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(eachMessageLayout.createSequentialGroup()

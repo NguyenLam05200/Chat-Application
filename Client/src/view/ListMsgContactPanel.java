@@ -4,6 +4,7 @@
  */
 package view;
 
+import static controller.Client.dashboard;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -17,9 +18,15 @@ import storage.User;
  */
 public class ListMsgContactPanel extends javax.swing.JPanel {
 
-    public static List<eachMessage> listMsgContactPanel;
+    public static List<EachMsgContact> listMsgContactPanel;
+    public static List<User> listContacts;
     int size;
     public static int curClick;
+
+    public static void setCurClick(int id) {
+        dashboard.clickContactMsg(listContacts.get(id));
+        curClick = id;
+    }
 
     public ListMsgContactPanel() {
     }
@@ -27,9 +34,10 @@ public class ListMsgContactPanel extends javax.swing.JPanel {
     public ListMsgContactPanel(List<User> listContacts, List<Message> listMsgContacts, Set contacts) {
         curClick = -1;
         this.size = contacts.size();
+        this.listContacts = listContacts;
         listMsgContactPanel = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            listMsgContactPanel.add(new eachMessage(listMsgContacts.get(i), listContacts.get(i), i));
+            listMsgContactPanel.add(new EachMsgContact(listMsgContacts.get(i), listContacts.get(i), i));
         }
         myInit();
     }

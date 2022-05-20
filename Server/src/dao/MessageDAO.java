@@ -54,6 +54,26 @@ public class MessageDAO {
         }
     }
 
+    public static List<Message> getListMsgChat(User user1, User user2) {
+        if (user1 == null || user2 == null) {
+            System.out.println("Not user");
+            return null;
+        } else {
+            List<Message> listMessage = null;
+            Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            String hql = "from Message where isAvailable = true and (sendTo = :user1 or sendTo= :user2) and (sendBy = :user1 or sendBy= :user2)";
+            Query query = session.createQuery(hql);
+            query.setParameter("user1", user1);
+            query.setParameter("user2", user2);
+
+            listMessage = query.list();
+            session.getTransaction().commit();
+
+            return listMessage;
+        }
+    }
+
     public static List<Message> getMessagesByReceiver(User user) {
         if (user == null) {
             System.out.println("Not user");
@@ -176,19 +196,25 @@ public class MessageDAO {
 
     public static void main(String[] args) throws NoSuchAlgorithmException {
 
-        User user = UserDAO.findOneByUsername("a");
-
-        Pair pair = getListMsgContact(user);
-        List<Message> listMsg = (List<Message>) pair.getKey();
-        List<User> listContacts = (List<User>) pair.getValue();
-        System.out.println("stop");
-//        List<Message> listMsg = getMsgRelateSoon(user);
-
+//        User user = UserDAO.findOneByUsername("a");
+//
+//        Pair pair = getListMsgContact(user);
+//        List<Message> listMsg = (List<Message>) pair.getKey();
+//        List<User> listContacts = (List<User>) pair.getValue();
+//        System.out.println("stop");
+////        List<Message> listMsg = getMsgRelateSoon(user);
+//
+//        for (Message x : listMsg) {
+//            System.out.println(x.getSendBy().getId() + " -> " + x.getSendTo().getId());
+//        }
+//        for (User x : listContacts) {
+//            System.out.println("user: " + x.getId());
+//        }
+        User user1 = UserDAO.findOneByUsername("a");
+        User user2 = UserDAO.findOneByUsername("s");
+        List<Message> listMsg = getListMsgChat(user1, user2);
         for (Message x : listMsg) {
-            System.out.println(x.getSendBy().getId() + " -> " + x.getSendTo().getId());
-        }
-        for (User x : listContacts) {
-            System.out.println("user: " + x.getId());
+            System.out.println(x.getContent());
         }
 
     }
