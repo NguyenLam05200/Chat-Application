@@ -72,6 +72,10 @@ public class ClientHandler implements Runnable {
                         res = HandleRequestOther.getListMsgChat(received, dispatchMsg, user);
                         dos.writeObject(res);
                         break;
+                    case MsgDispatch.DELIVER_MSG:
+                        HandleRequestOther.sendMsg(received, dispatchMsg, user);
+//                        dos.writeObject(res);
+                        break;
                     default:
                         throw new AssertionError();
                 }

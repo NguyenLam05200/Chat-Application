@@ -35,4 +35,19 @@ public class HandleRequestOther {
         return res;
     }
 
+    public static void sendMsg(Object[] req, String _dispatchMsg, User user) {
+        // handle request:
+        String contactID = req[1].toString();
+        String content = req[2].toString();
+
+        User contact = UserDAO.findOneById(Integer.parseInt(contactID));
+        Message newMsg = new Message(content, user, contact);
+        boolean isAddSuccess = MessageDAO.addMessage(newMsg);
+        if (isAddSuccess) {
+            System.out.println("Send msg successfully!");
+        } else {
+            System.out.println("Send msg failure!");
+        }
+    }
+
 }

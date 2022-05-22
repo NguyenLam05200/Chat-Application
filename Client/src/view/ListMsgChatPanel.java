@@ -1,5 +1,9 @@
 package view;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Rectangle;
+import java.awt.geom.Area;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.GroupLayout;
@@ -25,7 +29,7 @@ public class ListMsgChatPanel extends javax.swing.JPanel {
 
     private void initComponents(List<Message> _listMsgChat) {
         setBackground(new java.awt.Color(116, 180, 224));
-        setPreferredSize(new java.awt.Dimension(200, 100));
+        setPreferredSize(new java.awt.Dimension(100, 100));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -42,7 +46,7 @@ public class ListMsgChatPanel extends javax.swing.JPanel {
         ParallelGroup horiLeft = layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
         ParallelGroup horiRight = layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING);
 
-        for (int i = size - 1; i >= 0; i--) {
+        for (int i = 0; i < size; i++) {
             EachMsgChat eachMsgChat = listMsgChatPanel.get(i);
             if (eachMsgChat.mine) {
                 horiRight.addComponent(eachMsgChat, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
@@ -50,7 +54,7 @@ public class ListMsgChatPanel extends javax.swing.JPanel {
                 horiLeft.addComponent(eachMsgChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
             }
 
-            if (i == 0) {
+            if (i == size - 1) {
                 verti.addComponent(eachMsgChat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap();
             } else {

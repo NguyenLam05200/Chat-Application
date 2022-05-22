@@ -38,6 +38,7 @@ public class EachMsgChat extends javax.swing.JPanel {
     }
 
     public EachMsgChat(Message msg) {
+
         this.mine = msg.getSendBy().getId() == Client.user.getId();
 
         Timestamp date2 = msg.getSendAt();
@@ -45,7 +46,7 @@ public class EachMsgChat extends javax.swing.JPanel {
         if (isRightDate(date2)) {
             _time = new SimpleDateFormat("hh:mm a").format(date2);
         } else {
-            _time = new SimpleDateFormat("dd/MM/yyyy").format(date2);
+            _time = new SimpleDateFormat("hh:mm a dd/MM/yyyy").format(date2);
         }
 
         String _content = "<html><p>" + msg.getContent() + "</p></html>";
@@ -74,9 +75,9 @@ public class EachMsgChat extends javax.swing.JPanel {
         time = new javax.swing.JLabel();
 
         this.setBackground(new java.awt.Color(116, 180, 224));
+
 //        this.setAutoscrolls(true);
 //        this.setOpaque(false);
-
         auth.setForeground(new java.awt.Color(0, 0, 0));
         auth.setText("You");
 
@@ -91,11 +92,13 @@ public class EachMsgChat extends javax.swing.JPanel {
         content.setBorder(new BorderMsgChat(right, 2, 14, 10, SwingConstants.RIGHT));
 //end set border
         content.setMinimumSize(new java.awt.Dimension(0, 0));
+//        content.setMaximumSize(new java.awt.Dimension(0, 0));
+
         content.setOpaque(true);
 
         time.setForeground(new java.awt.Color(0, 0, 0));
         time.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        time.setText("22/02/2022");
+        time.setText(_time);
 
 //        javax.swing.GroupLayout thisLayout = new javax.swing.GroupLayout(this);
 //        this.setLayout(thisLayout);
@@ -157,6 +160,8 @@ public class EachMsgChat extends javax.swing.JPanel {
         content.setBorder(new BorderMsgChat(left, 2, 14, 10, SwingConstants.LEFT));
 // end set border
         content.setMinimumSize(new java.awt.Dimension(0, 0));
+//        content.setMaximumSize(new java.awt.Dimension(0, 0));
+
         content.setOpaque(true);
 
         auth.setForeground(new java.awt.Color(0, 0, 0));

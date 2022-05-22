@@ -15,7 +15,8 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import storage.Message;
+import javax.swing.JScrollPane;
+import javax.swing.JViewport;
 import storage.User;
 
 /**
@@ -124,7 +125,18 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         inputMessage = new javax.swing.JTextField();
-        scrollBodyMessages = new javax.swing.JScrollPane();
+        jPanel6 = new javax.swing.JPanel();
+        scrollSucess = new javax.swing.JScrollPane();
+        viewPortSuccess = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        content_2 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
+        content_1 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        scrollTemp = new javax.swing.JScrollPane();
         bodyMain = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
 
@@ -182,7 +194,7 @@ public class Dashboard extends javax.swing.JFrame {
                     .addComponent(date1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(contentMsg1, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addGap(0, 459, Short.MAX_VALUE))
         );
 
         eachMessage5.setBackground(new java.awt.Color(255, 255, 255));
@@ -231,7 +243,7 @@ public class Dashboard extends javax.swing.JFrame {
                     .addComponent(date2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(contentMsg2, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addGap(0, 459, Short.MAX_VALUE))
         );
 
         eachMessage6.setBackground(new java.awt.Color(255, 255, 255));
@@ -280,7 +292,7 @@ public class Dashboard extends javax.swing.JFrame {
                     .addComponent(date3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(contentMsg3, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addGap(0, 459, Short.MAX_VALUE))
         );
 
         eachMessage7.setBackground(new java.awt.Color(255, 255, 255));
@@ -329,7 +341,7 @@ public class Dashboard extends javax.swing.JFrame {
                     .addComponent(date4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(contentMsg4, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addGap(0, 459, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelListMsgContactsLayout = new javax.swing.GroupLayout(panelListMsgContacts);
@@ -656,7 +668,7 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(inputMessage, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+                .addComponent(inputMessage)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -670,10 +682,119 @@ public class Dashboard extends javax.swing.JFrame {
             .addComponent(inputMessage)
         );
 
-        scrollBodyMessages.setBackground(new java.awt.Color(255, 255, 255));
-        scrollBodyMessages.setBorder(null);
-        scrollBodyMessages.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollBodyMessages.setAutoscrolls(true);
+        jPanel6.setLayout(new javax.swing.OverlayLayout(jPanel6));
+
+        scrollSucess.setBackground(new java.awt.Color(116, 180, 224));
+
+        viewPortSuccess.setBackground(new java.awt.Color(116, 180, 224));
+        viewPortSuccess.setPreferredSize(new java.awt.Dimension(400, 300));
+
+        jPanel9.setBackground(new java.awt.Color(116, 180, 224));
+
+        jLabel9.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel9.setText("You");
+        jLabel9.setMinimumSize(new java.awt.Dimension(0, 0));
+
+        content_2.setBackground(new java.awt.Color(255, 255, 255));
+        content_2.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        content_2.setForeground(new java.awt.Color(0, 0, 0));
+        content_2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        content_2.setOpaque(true);
+
+        jLabel12.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel12.setText("jLabel6");
+        jLabel12.setMinimumSize(new java.awt.Dimension(0, 0));
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(content_2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE)
+            .addComponent(content_2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jPanel10.setBackground(new java.awt.Color(116, 180, 224));
+
+        jLabel13.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel13.setText("You");
+        jLabel13.setMinimumSize(new java.awt.Dimension(0, 0));
+
+        content_1.setBackground(new java.awt.Color(255, 255, 255));
+        content_1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        content_1.setForeground(new java.awt.Color(0, 0, 0));
+        content_1.setOpaque(true);
+
+        jLabel14.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel14.setText("jLabel5");
+        jLabel14.setMinimumSize(new java.awt.Dimension(3, 3));
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(content_1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE)
+            .addComponent(content_1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout viewPortSuccessLayout = new javax.swing.GroupLayout(viewPortSuccess);
+        viewPortSuccess.setLayout(viewPortSuccessLayout);
+        viewPortSuccessLayout.setHorizontalGroup(
+            viewPortSuccessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, viewPortSuccessLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(viewPortSuccessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        viewPortSuccessLayout.setVerticalGroup(
+            viewPortSuccessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, viewPortSuccessLayout.createSequentialGroup()
+                .addContainerGap(251, Short.MAX_VALUE)
+                .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        scrollSucess.setViewportView(viewPortSuccess);
+
+        jPanel6.add(scrollSucess);
+        scrollSucess.setVisible(false);
+
+        scrollTemp.setBackground(new java.awt.Color(116, 180, 224));
+        scrollTemp.setBorder(null);
+        scrollTemp.setAutoscrolls(true);
+        scrollTemp.setHorizontalScrollBar(null);
+        scrollTemp.setMinimumSize(new java.awt.Dimension(0, 0));
+        jPanel6.add(scrollTemp);
 
         javax.swing.GroupLayout bodyMessageLayout = new javax.swing.GroupLayout(bodyMessage);
         bodyMessage.setLayout(bodyMessageLayout);
@@ -681,14 +802,14 @@ public class Dashboard extends javax.swing.JFrame {
             bodyMessageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(scrollBodyMessages)
+            .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         bodyMessageLayout.setVerticalGroup(
             bodyMessageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bodyMessageLayout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollBodyMessages, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -723,7 +844,7 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(nav, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
-                .addComponent(body, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(body, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -841,29 +962,16 @@ public class Dashboard extends javax.swing.JFrame {
     void clickSendMessage() {
         String newTextMessage = inputMessage.getText();
         if (!newTextMessage.equals("")) {
-            System.out.println("Input message: " + newTextMessage);
-            Object[] temp = new Object[]{"REGISTER", "from mrA", "to Mr.B", "msg: " + newTextMessage};
-
-            try {
-                // write on the output stream
-                outStream.writeObject(temp);
-            } catch (IOException e) {
-                System.out.println("Server disconnected!");
-//                        e.printStackTrace();
-            }
-
+            Object[] req = new Object[]{MsgDispatch.DELIVER_MSG, Client.curContact.getId(), newTextMessage};
+            sendReq(req);
             inputMessage.setText("");
         }
     }
 
     public void requestListMsgChat(int contactId) {
-
-//        javax.swing.JPanel panelLoading = new javax.swing.JPanel();
-//        panelLoading.setBackground(Color.WHITE);
-//        panelLoading.add(loadingLabel);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                scrollBodyMessages.setViewportView(loadingLabel);
+                scrollTemp.setViewportView(loadingLabel);
             }
         });
 
@@ -872,10 +980,18 @@ public class Dashboard extends javax.swing.JFrame {
     }
 
     public void renderListMsgChat() {
-        ListMsgChatPanel listMsgChatPanel = new ListMsgChatPanel(curListMsgChat);
+//        jScrollPane2.setViewportView(listMsgChatPanel);
+//        String shortText = "<html><p>" + "hi" + "</p></html>";
+//        String longText = "<html><p>" + "HelloHelloHello, Long time no see, how are you Mr.C?" + "</p></html>";
+//
+//        content_1.setText(longText);
+//        content_2.setText(longText);
+//        scrollTemp.setVisible(false);
+
+        listMsgChatPanel = new ListMsgChatPanel(curListMsgChat);
+        scrollTemp.setViewportView(listMsgChatPanel);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                scrollBodyMessages.setViewportView(listMsgChatPanel);
             }
         });
     }
@@ -901,6 +1017,8 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel contentMsg2;
     private javax.swing.JLabel contentMsg3;
     private javax.swing.JLabel contentMsg4;
+    private javax.swing.JLabel content_1;
+    private javax.swing.JLabel content_2;
     private javax.swing.JLabel date1;
     private javax.swing.JLabel date2;
     private javax.swing.JLabel date3;
@@ -912,6 +1030,9 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JTextField inputMessage;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -919,11 +1040,15 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
@@ -941,11 +1066,14 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel panelSearchAndMenu;
     private javax.swing.JPanel panelSearchAndMenu1;
     private javax.swing.JPanel panelShowChat;
-    private javax.swing.JScrollPane scrollBodyMessages;
     private javax.swing.JScrollPane scrollNavMsgContacts;
+    private javax.swing.JScrollPane scrollSucess;
+    private javax.swing.JScrollPane scrollTemp;
+    private javax.swing.JPanel viewPortSuccess;
     // End of variables declaration//GEN-END:variables
     private javax.swing.JLabel loadingLabel;
     private javax.swing.JPanel listMsgContactsPanel;
+    private javax.swing.JPanel listMsgChatPanel;
     ObjectOutputStream outStream;
 
     private void sendReq(Object[] _req) {
@@ -958,4 +1086,5 @@ public class Dashboard extends javax.swing.JFrame {
 //                        e.printStackTrace();
         }
     }
+
 }
