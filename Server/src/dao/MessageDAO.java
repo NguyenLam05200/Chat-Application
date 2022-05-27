@@ -159,7 +159,7 @@ public class MessageDAO {
         List<User> contacts = new ArrayList<>();
         for (int id : set) {
             User u = UserDAO.findOneById(id);
-            contacts.add(0, u);
+            contacts.add(u);
         }
 
         List<Message> temp = new ArrayList<>();
@@ -216,6 +216,6 @@ public class MessageDAO {
         for (Message x : listMsg) {
             System.out.println(x.getContent());
         }
-
+        Pair pair = getListMsgContact(user1);
     }
 }

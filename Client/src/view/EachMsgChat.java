@@ -166,7 +166,7 @@ public class EachMsgChat extends javax.swing.JPanel {
 
         auth.setForeground(new java.awt.Color(0, 0, 0));
         auth.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        auth.setText("Mr.B");
+        auth.setText(Client.curContact.getName());
 
 //        javax.swing.GroupLayout thisLayout = new javax.swing.GroupLayout(this);
 //        this.setLayout(thisLayout);

@@ -13,7 +13,6 @@ import Config.MsgDispatch;
 import java.io.*;
 import java.net.*;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import storage.Message;
@@ -28,7 +27,7 @@ public class Client {
     public static Dashboard dashboard;
     public static List<Message> listMsgContacts;
     public static List<User> listContacts;
-    public static Set<Integer> setContacts;
+    public static List<Integer> listContactsID;
 
     public static User curContact;
     public static List<Message> curListMsgChat;
@@ -84,6 +83,12 @@ public class Client {
                             case MsgDispatch.GET_LIST_MSG_CHAT:
                                 handleResponseOther.getListMsgChat(res);
                                 dashboard.renderListMsgChat();
+                                break;
+                            case MsgDispatch.RECEIVED_MSG:
+                                User sendBy = new User(res[2], true);
+                                Message newMsg = new Message(res[1], sendBy, user);
+
+                                dashboard.getNewMsg(newMsg, sendBy);
                                 break;
                             default:
                                 throw new AssertionError();

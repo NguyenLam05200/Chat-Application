@@ -29,7 +29,7 @@ public class ListMsgChatPanel extends javax.swing.JPanel {
 
     private void initComponents(List<Message> _listMsgChat) {
         setBackground(new java.awt.Color(116, 180, 224));
-        setPreferredSize(new java.awt.Dimension(100, 100));
+//        setPreferredSize(new java.awt.Dimension(100, 100));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

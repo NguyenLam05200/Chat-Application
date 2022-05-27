@@ -31,7 +31,7 @@ public class ListMsgContactPanel extends javax.swing.JPanel {
     public ListMsgContactPanel() {
     }
 
-    public ListMsgContactPanel(List<User> listContacts, List<Message> listMsgContacts, Set contacts) {
+    public ListMsgContactPanel(List<User> listContacts, List<Message> listMsgContacts, List<Integer> contacts) {
         curClick = -1;
         this.size = contacts.size();
         this.listContacts = listContacts;

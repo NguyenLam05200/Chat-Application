@@ -35,7 +35,7 @@ public class HandleRequestOther {
         return res;
     }
 
-    public static void sendMsg(Object[] req, String _dispatchMsg, User user) {
+    public static Message sendMsg(Object[] req, String _dispatchMsg, User user) {
         // handle request:
         String contactID = req[1].toString();
         String content = req[2].toString();
@@ -48,6 +48,8 @@ public class HandleRequestOther {
         } else {
             System.out.println("Send msg failure!");
         }
+
+        return newMsg;
     }
 
 }

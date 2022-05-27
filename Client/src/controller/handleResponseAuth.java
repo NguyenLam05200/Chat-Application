@@ -52,7 +52,7 @@ public class handleResponseAuth {
 
         listMsgContacts = new ArrayList<>();
         listContacts = new ArrayList<>();
-        setContacts = new LinkedHashSet<>();
+        listContactsID = new ArrayList<>();
 
         for (int i = 1; i <= size; i++) {
 
@@ -67,7 +67,7 @@ public class handleResponseAuth {
                 contact = new User(res[i + size], true);
                 msg = new Message(eachMsg, contact, user);
             }
-            setContacts.add(contact.getId());
+            listContactsID.add(contact.getId());
             listMsgContacts.add(msg);
             listContacts.add(contact);
         }

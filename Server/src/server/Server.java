@@ -9,13 +9,11 @@ package server;
  * @author holohoi
  */
 import Config.Env;
-import Config.MsgDispatch;
+import entity.Message;
 import entity.User;
 import java.io.*;
 import java.util.*;
 import java.net.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 // Server class
 public class Server {
@@ -66,6 +64,16 @@ public class Server {
             // by any naming scheme
             i++;
 
+        }
+    }
+
+    public static void deliverMsg(Message msg, User sendBy) {
+        User sendTo = msg.getSendTo();
+
+        for (ClientHandler curClient : ar) {
+            if (curClient.getUser() != null && curClient.getUser().getId() == sendTo.getId()) {
+                curClient.getMsg(msg, sendBy);
+            }
         }
     }
 }

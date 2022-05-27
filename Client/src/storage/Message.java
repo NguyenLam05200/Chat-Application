@@ -37,6 +37,11 @@ public class Message implements java.io.Serializable {
         this.content = content;
         this.sendBy = sendBy;
         this.sendTo = sendTo;
+
+        Timestamp curTime = new Timestamp(System.currentTimeMillis());
+        this.sendAt = curTime;
+        this.isAvailable = true;
+        this.seenAt = null;
     }
 
     public Object[] getObject() {

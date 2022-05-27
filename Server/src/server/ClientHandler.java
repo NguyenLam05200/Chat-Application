@@ -5,6 +5,7 @@
 package server;
 
 import Config.MsgDispatch;
+import entity.Message;
 import entity.User;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -20,7 +21,7 @@ import java.util.logging.Logger;
 // ClientHandler class
 public class ClientHandler implements Runnable {
 
-    User user;
+    User user = null;
     final ObjectInputStream dis;
     final ObjectOutputStream dos;
     Socket s;
@@ -73,8 +74,8 @@ public class ClientHandler implements Runnable {
                         dos.writeObject(res);
                         break;
                     case MsgDispatch.DELIVER_MSG:
-                        HandleRequestOther.sendMsg(received, dispatchMsg, user);
-//                        dos.writeObject(res);
+                        Message msg = HandleRequestOther.sendMsg(received, dispatchMsg, user);
+                        Server.deliverMsg(msg, user);
                         break;
                     default:
                         throw new AssertionError();
@@ -95,6 +96,17 @@ public class ClientHandler implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public void getMsg(Message msg, User sendBy) {
+        Object[][] res;
+        res = new Object[3][];
+        res[0] = new Object[]{MsgDispatch.RECEIVED_MSG};
+        res[1] = msg.getObject();
+        res[2] = sendBy.getObject();
+        try {
+            dos.writeObject(res);
+        } catch (Exception e) {
+        }
     }
 }

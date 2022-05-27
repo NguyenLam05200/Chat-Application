@@ -15,8 +15,8 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import javax.swing.JScrollPane;
-import javax.swing.JViewport;
+import javax.swing.JScrollBar;
+import storage.Message;
 import storage.User;
 
 /**
@@ -58,17 +58,21 @@ public class Dashboard extends javax.swing.JFrame {
         loadingLabel.setBackground(Color.WHITE);
         loadingLabel.setOpaque(true);
 
-        listMsgContactsPanel = new ListMsgContactPanel(Client.listContacts, Client.listMsgContacts, Client.setContacts);
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                scrollNavMsgContacts.setViewportView(listMsgContactsPanel);
-            }
-        });
+        renderListChatContacts();
 //        jLabel4.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/background.jpg")).getImage().getScaledInstance(bodyMain.getWidth(), bodyMain.getHeight(), Image.SCALE_SMOOTH)));
         bodyMain.setVisible(false);
         bodyMessage.setVisible(true);
         setSessionPanelNav("navMain");
         setSessionPanelBody("bodyMain");
+    }
+
+    private void renderListChatContacts() {
+        listMsgContactsPanel = new ListMsgContactPanel(Client.listContacts, Client.listMsgContacts, Client.listContactsID);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                scrollNavMsgContacts.setViewportView(listMsgContactsPanel);
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -844,7 +848,7 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(nav, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
-                .addComponent(body, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE))
+                .addComponent(body, javax.swing.GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -964,6 +968,35 @@ public class Dashboard extends javax.swing.JFrame {
         if (!newTextMessage.equals("")) {
             Object[] req = new Object[]{MsgDispatch.DELIVER_MSG, Client.curContact.getId(), newTextMessage};
             sendReq(req);
+
+            Message newMsg = new Message(newTextMessage, Client.user, Client.curContact);
+
+            //render chat panel again
+            curListMsgChat.add(newMsg);
+            renderListMsgChat();
+            // end render chat panel again
+
+            //render chat contact again
+            int contactID = Client.curContact.getId();
+            int index = Client.listContactsID.indexOf(contactID);
+            if (index == -1) { // first time contact
+            } else {
+
+                // already contact
+                Client.listContactsID.remove(index);
+                Client.listContactsID.add(0, contactID);
+
+                User _contact = Client.listContacts.get(index);
+                Client.listContacts.remove(index);
+                Client.listContacts.add(0, _contact);
+
+                Client.listMsgContacts.remove(index);
+                Client.listMsgContacts.add(0, newMsg);
+            }
+            listMsgContactsPanel = new ListMsgContactPanel(Client.listContacts, Client.listMsgContacts, Client.listContactsID);
+            renderListChatContacts();
+
+            // end render chat contact again
             inputMessage.setText("");
         }
     }
@@ -980,20 +1013,43 @@ public class Dashboard extends javax.swing.JFrame {
     }
 
     public void renderListMsgChat() {
-//        jScrollPane2.setViewportView(listMsgChatPanel);
-//        String shortText = "<html><p>" + "hi" + "</p></html>";
-//        String longText = "<html><p>" + "HelloHelloHello, Long time no see, how are you Mr.C?" + "</p></html>";
-//
-//        content_1.setText(longText);
-//        content_2.setText(longText);
-//        scrollTemp.setVisible(false);
-
         listMsgChatPanel = new ListMsgChatPanel(curListMsgChat);
         scrollTemp.setViewportView(listMsgChatPanel);
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-            }
-        });
+        JScrollBar vertical = scrollTemp.getVerticalScrollBar();
+        vertical.setValue(vertical.getMaximum());
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//            }
+//        });
+    }
+
+    public void getNewMsg(Message newMsg, User sendBy) {
+        //render chat contact again
+        int contactID = sendBy.getId();
+        int index = Client.listContactsID.indexOf(contactID);
+        if (index == -1) { // never contact
+        } else {
+            // already contact
+            Client.listContactsID.remove(index);
+            Client.listContactsID.add(0, contactID);
+
+            User _contact = Client.listContacts.get(index);
+            Client.listContacts.remove(index);
+            Client.listContacts.add(0, _contact);
+
+            Client.listMsgContacts.remove(index);
+            Client.listMsgContacts.add(0, newMsg);
+        }
+        listMsgContactsPanel = new ListMsgContactPanel(Client.listContacts, Client.listMsgContacts, Client.listContactsID);
+        renderListChatContacts();
+        // end render chat contact again
+
+        if (Client.curContact != null && Client.curContact.getId() == sendBy.getId()) {
+            //render chat panel again
+            curListMsgChat.add(newMsg);
+            renderListMsgChat();
+            // end render chat panel again}
+        }
     }
 
     private Image fitimage(Image img, int w, int h) {
