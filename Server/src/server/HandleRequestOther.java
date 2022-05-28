@@ -52,4 +52,22 @@ public class HandleRequestOther {
         return newMsg;
     }
 
+    public static Object[][] searchUser(Object[] req, String _dispatchMsg) {
+        // init response:
+        Object[][] res;
+
+        // handle request:
+        String usernameForSearch = req[1].toString();
+        List<User> results = UserDAO.searchByName(usernameForSearch);
+
+        int size = results.size();
+        res = new Object[size + 1][];
+        res[0] = new Object[]{_dispatchMsg};
+
+        for (int i = 1; i < size + 1; i++) {
+            res[i] = results.get(i - 1).getObject();
+        }
+        return res;
+    }
+
 }

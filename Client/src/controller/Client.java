@@ -90,6 +90,10 @@ public class Client {
 
                                 dashboard.getNewMsg(newMsg, sendBy);
                                 break;
+                            case MsgDispatch.SEARCH_USER:
+                                List<User> listUserResult = handleResponseOther.getResultSearchUser(res);
+                                dashboard.renderSearchUserResults(listUserResult);
+                                break;
                             default:
                                 throw new AssertionError();
                         }

@@ -21,11 +21,24 @@ public class User implements java.io.Serializable {
     private String email;
     private Timestamp lastSeen;
     private String image;
-    private boolean gender;
+    private boolean gender; //true: nam, false: nu
     private boolean isActive; // True: Male, False: Female
 
     //Các phương thức khởi tạo, get, set.
     public User() {
+    }
+
+    public User(String username, String password, String name, String email, boolean gender) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        Long datetime = System.currentTimeMillis();
+        Timestamp timestamp = new Timestamp(datetime);
+        this.lastSeen = timestamp;
+        this.image = null;
+        this.gender = gender;
+        this.isActive = true;
     }
 
     public User(String username, String password, String name) {

@@ -77,6 +77,10 @@ public class ClientHandler implements Runnable {
                         Message msg = HandleRequestOther.sendMsg(received, dispatchMsg, user);
                         Server.deliverMsg(msg, user);
                         break;
+                    case MsgDispatch.SEARCH_USER:
+                        res = HandleRequestOther.searchUser(received, dispatchMsg);
+                        dos.writeObject(res);
+                        break;
                     default:
                         throw new AssertionError();
                 }

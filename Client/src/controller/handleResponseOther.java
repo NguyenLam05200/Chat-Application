@@ -38,4 +38,16 @@ public class handleResponseOther {
         }
 
     }
+
+    public static List<User> getResultSearchUser(Object[][] res) {
+        int size = res.length; // 5 - 1 = 4/2 = 2
+        List<User> listUserResult = new ArrayList<>();
+
+        for (int i = 1; i < size; i++) {
+            Object[] eachResult = res[i];
+
+            listUserResult.add(new User(eachResult, true));
+        }
+        return listUserResult;
+    }
 }
