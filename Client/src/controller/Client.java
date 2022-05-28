@@ -92,7 +92,11 @@ public class Client {
                                 break;
                             case MsgDispatch.SEARCH_USER:
                                 List<User> listUserResult = handleResponseOther.getResultSearchUser(res);
-                                dashboard.renderSearchUserResults(listUserResult);
+                                dashboard.renderSearchUserResults(listUserResult, "forContact");
+                                break;
+                            case MsgDispatch.SEARCH_USER_FOR_ADD:
+                                List<User> listUserResultForAdd = handleResponseOther.getResultSearchUser(res);
+                                dashboard.renderSearchUserResults(listUserResultForAdd, "forAdd");
                                 break;
                             default:
                                 throw new AssertionError();

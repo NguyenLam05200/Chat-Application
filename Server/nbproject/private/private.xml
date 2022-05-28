@@ -5,6 +5,9 @@
         <group>
             <file>file:/C:/Users/holohoi/Documents/NetBeansProjects/Chat-javaNetworking/Chat-Application/Server/src/server/HandleRequestOther.java</file>
             <file>file:/C:/Users/holohoi/Documents/NetBeansProjects/Chat-javaNetworking/Chat-Application/Server/src/server/Server.java</file>
+            <file>file:/C:/Users/holohoi/Documents/NetBeansProjects/Chat-javaNetworking/Chat-Application/Server/src/dao/UserDAO.java</file>
+            <file>file:/C:/Users/holohoi/Documents/NetBeansProjects/Chat-javaNetworking/Chat-Application/Server/src/entity/Message.java</file>
+            <file>file:/C:/Users/holohoi/Documents/NetBeansProjects/Chat-javaNetworking/Chat-Application/Server/src/server/ClientHandler.java</file>
         </group>
     </open-files>
 </project-private>

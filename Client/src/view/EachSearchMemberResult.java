@@ -27,17 +27,17 @@ public class EachSearchMemberResult extends javax.swing.JPanel {
     }
 
     public EachSearchMemberResult(User _user) {
-        jCheckBox1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        this.setBackground(new java.awt.Color(255, 255, 255));
+        this.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(255, 102, 102)));
 
-        avata.setText("avatar");
+        jCheckBox1.setBackground(new java.awt.Color(255, 255, 255));
+        jCheckBox1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
         name.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         name.setForeground(new java.awt.Color(0, 0, 0));
-        name.setText("Mr. b");
 
         lastseen.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         lastseen.setForeground(new java.awt.Color(102, 102, 102));
-        lastseen.setText("last seen 16/03/2022");
 
         init(_user);
     }
@@ -45,7 +45,7 @@ public class EachSearchMemberResult extends javax.swing.JPanel {
     private void init(User _user) {
 
 //        avatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/user.png"))); // NOI18N
-        avata.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/user.png")).getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH)));
+        avata.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/user.png")).getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
 
         name.setText(_user.getName());
 

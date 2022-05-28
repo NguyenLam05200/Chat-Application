@@ -15,6 +15,9 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollBar;
@@ -100,22 +103,47 @@ public class Dashboard extends javax.swing.JFrame {
         });
     }
 
-    public void renderSearchUserResults(List<User> listSearchUserResults) {
-        if (listSearchUserResults.size() == 0) {
-            java.awt.EventQueue.invokeLater(new Runnable() {
-                public void run() {
-                    scrollNavMsgContacts.setViewportView(noResultLabel);
-                    setSessionPanelNav("navMain");
+    public void renderSearchUserResults(List<User> listSearchUserResults, String caseRender) {
+        switch (caseRender) {
+            case "forContact":
+                if (listSearchUserResults.isEmpty()) {
+                    java.awt.EventQueue.invokeLater(new Runnable() {
+                        public void run() {
+                            scrollNavMsgContacts.setViewportView(noResultLabel);
+                            setSessionPanelNav("navMain");
+                        }
+                    });
+                } else {
+                    listMsgContactsPanel = new ListMsgContactPanel(listSearchUserResults);
+                    java.awt.EventQueue.invokeLater(new Runnable() {
+                        public void run() {
+                            scrollNavMsgContacts.setViewportView(listMsgContactsPanel);
+                            setSessionPanelNav("navMain");
+                        }
+                    });
                 }
-            });
-        } else {
-            listMsgContactsPanel = new ListMsgContactPanel(listSearchUserResults);
-            java.awt.EventQueue.invokeLater(new Runnable() {
-                public void run() {
-                    scrollNavMsgContacts.setViewportView(listMsgContactsPanel);
-                    setSessionPanelNav("navMain");
+                break;
+            case "forAdd":
+                if (listSearchUserResults.isEmpty()) {
+                    java.awt.EventQueue.invokeLater(new Runnable() {
+                        public void run() {
+                            jScrollPane1.setViewportView(noResultLabel);
+                            setSessionPanelBody("bodyNewGroup");
+                        }
+                    });
+                } else {
+                    ListSearchMemberResult searchResults = new ListSearchMemberResult(listSearchUserResults);
+
+                    java.awt.EventQueue.invokeLater(new Runnable() {
+                        public void run() {
+                            jScrollPane1.setViewportView(searchResults);
+                            setSessionPanelBody("bodyNewGroup");
+                        }
+                    });
                 }
-            });
+                break;
+            default:
+                throw new AssertionError();
         }
 
     }
@@ -1150,7 +1178,20 @@ public class Dashboard extends javax.swing.JFrame {
 
         jTextField4.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jTextField4.setForeground(new java.awt.Color(102, 102, 102));
-        jTextField4.setText("Search user");
+        jTextField4.setText("Search users");
+        jTextField4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextField4MouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jTextField4MouseExited(evt);
+            }
+        });
+        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField4ActionPerformed(evt);
+            }
+        });
 
         jButton1.setBackground(new java.awt.Color(153, 255, 255));
         jButton1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -1495,6 +1536,8 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void option1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_option1MouseClicked
         // TODO add your handling code here:
+        ListSearchMemberResult searchResults = new ListSearchMemberResult(Client.listContacts);
+        jScrollPane1.setViewportView(searchResults);
         setSessionPanelBody("bodyNewGroup");
     }//GEN-LAST:event_option1MouseClicked
 
@@ -1514,6 +1557,32 @@ public class Dashboard extends javax.swing.JFrame {
             jTextField2.setText("Search contact");
         }
     }//GEN-LAST:event_jTextField2MouseExited
+
+    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+        // TODO add your handling code here:
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                jScrollPane1.setViewportView(loadingLabel);
+            }
+        });
+
+        String usernameForSearch = jTextField4.getText();
+        Object[] req = new Object[]{MsgDispatch.SEARCH_USER_FOR_ADD, usernameForSearch};
+        sendReq(req);
+    }//GEN-LAST:event_jTextField4ActionPerformed
+
+    private void jTextField4MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField4MouseExited
+        // TODO add your handling code here:
+        String curTextSearch = jTextField4.getText();
+        if (curTextSearch.equals("")) {
+            jTextField4.setText("Search users");
+        }
+    }//GEN-LAST:event_jTextField4MouseExited
+
+    private void jTextField4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField4MouseClicked
+        // TODO add your handling code here:
+        jTextField4.setText("");
+    }//GEN-LAST:event_jTextField4MouseClicked
 
     void setSessionPanelNav(String sessionName) {
         Component[] cpnts = nav.getComponents();
@@ -1543,6 +1612,32 @@ public class Dashboard extends javax.swing.JFrame {
 
     public void clickContactMsg(User contact) {
         labelContactName.setText(contact.getName());
+
+//set text for last seen
+        Timestamp lastseenShow = contact.getLastSeen();
+        Instant start = lastseenShow.toInstant();
+        Instant stop = Instant.now();
+        Duration duration = Duration.between(start, stop);
+        long totalHours = duration.toHours();
+        if (totalHours > 24) {
+            long toDays = duration.toDays();
+            if (toDays > 30) {
+                toDays /= 30;
+                labelContactLastseen.setText("last seen " + toDays + " months ago");
+            } else {
+                labelContactLastseen.setText("last seen " + toDays + " days ago");
+            }
+        } else {
+            long toMinutes = duration.toMinutes();
+            if (toMinutes >= 60) {
+                labelContactLastseen.setText("last seen " + totalHours + " hours ago");
+            } else {
+                labelContactLastseen.setText("last seen " + toMinutes + " minutes ago");
+            }
+
+        }
+// end set text for last seen
+
         setSessionPanelBody("bodyMessage");
     }
 
@@ -1598,8 +1693,11 @@ public class Dashboard extends javax.swing.JFrame {
             int contactID = Client.curContact.getId();
             int index = Client.listContactsID.indexOf(contactID);
             if (index == -1) { // first time contact
-            } else {
+                Client.listContactsID.add(0, contactID);
+                Client.listContacts.add(0, Client.curContact);
 
+                Client.listMsgContacts.add(0, newMsg);
+            } else {
                 // already contact
                 Client.listContactsID.remove(index);
                 Client.listContactsID.add(0, contactID);
@@ -1646,6 +1744,11 @@ public class Dashboard extends javax.swing.JFrame {
         int contactID = sendBy.getId();
         int index = Client.listContactsID.indexOf(contactID);
         if (index == -1) { // never contact
+            Client.listContactsID.add(0, contactID);
+
+            Client.listContacts.add(0, sendBy);
+
+            Client.listMsgContacts.add(0, newMsg);
         } else {
             // already contact
             Client.listContactsID.remove(index);

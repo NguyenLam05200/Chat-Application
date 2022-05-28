@@ -10,6 +10,7 @@ package dao;
  */
 import entity.User;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
 import java.text.Normalizer;
 import java.util.List;
 import java.util.Random;
@@ -94,6 +95,24 @@ public class UserDAO {
     }
 
     public static boolean changePassword(User user) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+        try {
+            session.update(user);
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            System.out.println("Opps, " + e);
+            session.getTransaction().commit();
+
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean updateLastSeen(User user) {
+        Timestamp curTime = new Timestamp(System.currentTimeMillis());
+        user.setLastSeen(curTime);
+
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         try {
