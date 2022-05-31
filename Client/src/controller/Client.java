@@ -25,12 +25,12 @@ public class Client {
     public static User user;
     public static Auth auth;
     public static Dashboard dashboard;
-    public static List<Message> listMsgContacts;
-    public static List<User> listContacts;
-    public static List<Integer> listContactsID;
+    public static List<Object[]> listMsgContacts;
+    public static List<Object[]> listContacts;
+    public static List<String> listContactsID;
 
-    public static User curContact;
-    public static List<Message> curListMsgChat;
+    public static Object[] curContact;
+    public static List<Object[]> curListMsgChat;
 
     public static void main(String args[]) throws UnknownHostException, IOException {
 
@@ -85,18 +85,22 @@ public class Client {
                                 dashboard.renderListMsgChat();
                                 break;
                             case MsgDispatch.RECEIVED_MSG:
-                                User sendBy = new User(res[2], true);
-                                Message newMsg = new Message(res[1], sendBy, user);
+                                Object[] sendBy = res[2];
+                                Object[] newMsg = res[1];
 
                                 dashboard.getNewMsg(newMsg, sendBy);
                                 break;
                             case MsgDispatch.SEARCH_USER:
-                                List<User> listUserResult = handleResponseOther.getResultSearchUser(res);
+                                List<Object[]> listUserResult = handleResponseOther.getResultSearchUser(res);
                                 dashboard.renderSearchUserResults(listUserResult, "forContact");
                                 break;
                             case MsgDispatch.SEARCH_USER_FOR_ADD:
-                                List<User> listUserResultForAdd = handleResponseOther.getResultSearchUser(res);
+                                List<Object[]> listUserResultForAdd = handleResponseOther.getResultSearchUser(res);
                                 dashboard.renderSearchUserResults(listUserResultForAdd, "forAdd");
+                                break;
+                            case MsgDispatch.CREATE_NEW_GROUP:
+                                Object[] newGr = res[1];
+                                dashboard.createNewGroupSuccess(newGr);
                                 break;
                             default:
                                 throw new AssertionError();

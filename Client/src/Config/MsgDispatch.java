@@ -18,4 +18,6 @@ public class MsgDispatch {
     public static final String RECEIVED_MSG = "RECEIVED_MSG";
     public static final String SEARCH_USER = "SEARCH_USER";
     public static final String SEARCH_USER_FOR_ADD = "SEARCH_USER_FOR_ADD";
+    public static final String CREATE_NEW_GROUP = "CREATE_NEW_GROUP";
+
 }

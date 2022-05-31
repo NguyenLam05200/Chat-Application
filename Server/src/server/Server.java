@@ -67,12 +67,10 @@ public class Server {
         }
     }
 
-    public static void deliverMsg(Message msg, User sendBy) {
-        User sendTo = msg.getSendTo();
-
+    public static void deliverMsg(boolean isUser, Object[] msg, Object[] from, int sendToID) {
         for (ClientHandler curClient : ar) {
-            if (curClient.getUser() != null && curClient.getUser().getId() == sendTo.getId()) {
-                curClient.getMsg(msg, sendBy);
+            if (curClient.getUser() != null && curClient.getUser().getId() == sendToID) {
+                curClient.getMsg(isUser, msg, from);
             }
         }
     }

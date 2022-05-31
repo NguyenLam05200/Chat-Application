@@ -4,13 +4,10 @@
  */
 package view;
 
-import controller.Client;
 import java.awt.Image;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import javax.swing.ImageIcon;
-import storage.Message;
-import storage.User;
 
 /**
  *
@@ -18,7 +15,7 @@ import storage.User;
  */
 public class EachSearchMemberResult extends javax.swing.JPanel {
 
-    javax.swing.JCheckBox jCheckBox1 = new javax.swing.JCheckBox();
+    public javax.swing.JCheckBox checkbox = new javax.swing.JCheckBox();
     javax.swing.JLabel avata = new javax.swing.JLabel();
     javax.swing.JLabel name = new javax.swing.JLabel();
     javax.swing.JLabel lastseen = new javax.swing.JLabel();
@@ -26,12 +23,12 @@ public class EachSearchMemberResult extends javax.swing.JPanel {
     public EachSearchMemberResult() {
     }
 
-    public EachSearchMemberResult(User _user) {
+    public EachSearchMemberResult(Object[] _user) {
         this.setBackground(new java.awt.Color(255, 255, 255));
         this.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(255, 102, 102)));
 
-        jCheckBox1.setBackground(new java.awt.Color(255, 255, 255));
-        jCheckBox1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        checkbox.setBackground(new java.awt.Color(255, 255, 255));
+        checkbox.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
         name.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         name.setForeground(new java.awt.Color(0, 0, 0));
@@ -42,20 +39,22 @@ public class EachSearchMemberResult extends javax.swing.JPanel {
         init(_user);
     }
 
-    private void init(User _user) {
+    private void init(Object[] _user) {
 
 //        avatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/user.png"))); // NOI18N
         avata.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/user.png")).getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
 
-        name.setText(_user.getName());
+        name.setText(_user[1].toString());
 
 //===============
-        if (isRightDate(_user.getLastSeen())) {
-            String sendedAtDate = new SimpleDateFormat("hh:mm a").format(_user.getLastSeen());
+        String objLastSeen = _user[3].toString();
+        Timestamp lastseenVar = Timestamp.valueOf(objLastSeen);
+        if (isRightDate(lastseenVar)) {
+            String sendedAtDate = new SimpleDateFormat("hh:mm a").format(lastseenVar);
             sendedAtDate = "last seen " + sendedAtDate;
             lastseen.setText("<html><p>" + sendedAtDate + "</p></html>");
         } else {
-            String sendedAtDate = new SimpleDateFormat("dd/MM/yyyy").format(_user.getLastSeen());
+            String sendedAtDate = new SimpleDateFormat("dd/MM/yyyy").format(lastseenVar);
             sendedAtDate = "last seen " + sendedAtDate;
             lastseen.setText("<html><p>" + sendedAtDate + "</p></html>");
         }
@@ -71,14 +70,14 @@ public class EachSearchMemberResult extends javax.swing.JPanel {
                                         .addComponent(name, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(lastseen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
-                                .addComponent(jCheckBox1)
+                                .addComponent(checkbox)
                                 .addContainerGap())
         );
         thisLayout.setVerticalGroup(
                 thisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(thisLayout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(checkbox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addContainerGap())
                         .addComponent(avata, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(thisLayout.createSequentialGroup()

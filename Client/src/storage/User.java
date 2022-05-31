@@ -52,6 +52,10 @@ public class User implements java.io.Serializable {
         this.isActive = Boolean.parseBoolean(res[6].toString());
     }
 
+    public Object[] getObject() {
+        return new Object[]{id, name, email, lastSeen.toString(), image, gender, isActive};
+    }
+
     public int getId() {
         return id;
     }

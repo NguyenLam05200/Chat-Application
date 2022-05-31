@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
-import storage.User;
 
 /**
  *
@@ -16,15 +15,25 @@ import storage.User;
  */
 public class ListSearchMemberResult extends javax.swing.JPanel {
 
-    public ListSearchMemberResult(List<User> _listMemberResults) {
-        initComponents(_listMemberResults);
+    public List<javax.swing.JCheckBox> listCheckbox;
+    public List<Object[]> listMemberResults;
+
+    public ListSearchMemberResult(List<Object[]> _listMemberResults) {
+        this.listCheckbox = new ArrayList<>();
+        this.listMemberResults = new ArrayList<>();
+        for (Object[] x : _listMemberResults) {
+            if (x.length == 7) {
+                listMemberResults.add(x);
+            }
+        }
+        initComponents();
     }
 
-    private void initComponents(List<User> _listMemberResults) {
+    private void initComponents() {
         this.setBackground(new java.awt.Color(255, 255, 255));
 
         List<EachSearchMemberResult> listMemberResultPanel = new ArrayList<>();
-        for (User _user : _listMemberResults) {
+        for (Object[] _user : listMemberResults) {
             listMemberResultPanel.add(new EachSearchMemberResult(_user));
         }
 
@@ -36,6 +45,8 @@ public class ListSearchMemberResult extends javax.swing.JPanel {
         verti.addContainerGap();
 
         for (EachSearchMemberResult eachResult : listMemberResultPanel) {
+            listCheckbox.add(eachResult.checkbox);
+
             hori.addComponent(eachResult, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
 
             verti.addComponent(eachResult, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)

@@ -23,11 +23,11 @@ public class ListMsgChatPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify
     List<EachMsgChat> listMsgChatPanel = new ArrayList<>();
 
-    public ListMsgChatPanel(List<Message> _listMsgChat) {
+    public ListMsgChatPanel(List<Object[]> _listMsgChat) {
         initComponents(_listMsgChat);
     }
 
-    private void initComponents(List<Message> _listMsgChat) {
+    private void initComponents(List<Object[]> _listMsgChat) {
         setBackground(new java.awt.Color(116, 180, 224));
 //        setPreferredSize(new java.awt.Dimension(100, 100));
 

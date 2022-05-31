@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 14, 2011 4:33:03 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="entity.Message_Group" table="message_group" catalog="chat">
+        <id name="id" type="integer">
+            <column name="id" length="11" />
+            <generator class="increment" />
+        </id>
+        <property name="content" type="string">
+            <column name="content" />
+        </property>
+        <property name="sendAt" type="timestamp">
+            <column name="sendAt" />
+        </property>
+        <many-to-one name="sendBy" class="entity.User" >
+            <column name="sendBy" />
+        </many-to-one>
+        <many-to-one name="sendTo" class="entity.Group" >
+            <column name="sendTo" />
+        </many-to-one>
+        <property name="isAvailable" type="boolean">
+            <column name="isAvailable" />
+        </property>
+    </class>
+</hibernate-mapping>

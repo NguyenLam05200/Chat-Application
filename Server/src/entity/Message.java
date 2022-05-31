@@ -4,7 +4,9 @@
  */
 package entity;
 
+import dao.UserDAO;
 import java.sql.Timestamp;
+import server.ClientHandler;
 
 /**
  *
@@ -34,8 +36,17 @@ public class Message implements java.io.Serializable {
         this.seenAt = null;
     }
 
-    public Object[] getObject() {
-        return new Object[]{id, content, sendAt.toString(), sendBy.getId(), sendTo.getId(), isAvailable, seenAt};
+    public Object[] getObject(User auth) {
+        if (sendBy.getId() == auth.getId()) {
+            //send by you
+            User sendToUser = UserDAO.findOneById(sendTo.getId());
+            return new Object[]{id, content, sendAt.toString(), auth.getId(), sendToUser.getName(), isAvailable, seenAt};
+        } else {
+            //send to you
+            User sendByUser = UserDAO.findOneById(sendBy.getId());
+            return new Object[]{id, content, sendAt.toString(), sendByUser.getName(), "you", isAvailable, seenAt};
+        }
+//        return new Object[]{id, content, sendAt.toString(), sendBy.getId(), sendTo.getId(), isAvailable, seenAt};
     }
 
     public int getId() {

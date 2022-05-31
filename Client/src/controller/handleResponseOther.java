@@ -8,6 +8,7 @@ import static controller.Client.*;
 import static controller.Client.user;
 import static controller.Client.dashboard;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import storage.Message;
@@ -24,29 +25,21 @@ public class handleResponseOther {
     public static void getListMsgChat(Object[][] res) {
         int size = res.length; // 5 - 1 = 4/2 = 2
         curListMsgChat = new ArrayList<>();
-
         for (int i = 1; i < size; i++) {
             Object[] eachMsg = res[i];
-            Message msg;
-            int sendBy = Integer.parseInt(eachMsg[3].toString());
-            if (sendBy == user.getId()) {
-                msg = new Message(eachMsg, user, curContact);
-            } else {
-                msg = new Message(eachMsg, curContact, user);
-            }
-            curListMsgChat.add(msg);
+            curListMsgChat.add(eachMsg);
         }
 
     }
 
-    public static List<User> getResultSearchUser(Object[][] res) {
+    public static List<Object[]> getResultSearchUser(Object[][] res) {
         int size = res.length; // 5 - 1 = 4/2 = 2
-        List<User> listUserResult = new ArrayList<>();
+        List<Object[]> listUserResult = new ArrayList<>();
 
         for (int i = 1; i < size; i++) {
             Object[] eachResult = res[i];
 
-            listUserResult.add(new User(eachResult, true));
+            listUserResult.add(eachResult);
         }
         return listUserResult;
     }

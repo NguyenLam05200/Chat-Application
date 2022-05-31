@@ -76,15 +76,18 @@ public class ClientHandler implements Runnable {
                         dos.writeObject(res);
                         break;
                     case MsgDispatch.DELIVER_MSG:
-                        Message msg = HandleRequestOther.sendMsg(received, dispatchMsg, user);
-                        Server.deliverMsg(msg, user);
+                        HandleRequestOther.sendMsg(received, dispatchMsg, user);
                         break;
                     case MsgDispatch.SEARCH_USER:
-                        res = HandleRequestOther.searchUser(received, dispatchMsg);
+                        res = HandleRequestOther.searchContact(received, dispatchMsg, user);
                         dos.writeObject(res);
                         break;
                     case MsgDispatch.SEARCH_USER_FOR_ADD:
-                        res = HandleRequestOther.searchUser2(received, dispatchMsg);
+                        res = HandleRequestOther.searchUser(received, dispatchMsg);
+                        dos.writeObject(res);
+                        break;
+                    case MsgDispatch.CREATE_NEW_GROUP:
+                        res = HandleRequestOther.createNewGroup(received, dispatchMsg, user);
                         dos.writeObject(res);
                         break;
                     default:
@@ -110,12 +113,12 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public void getMsg(Message msg, User sendBy) {
+    public void getMsg(boolean isUser, Object[] msg, Object[] from) {
         Object[][] res;
         res = new Object[3][];
-        res[0] = new Object[]{MsgDispatch.RECEIVED_MSG};
-        res[1] = msg.getObject();
-        res[2] = sendBy.getObject();
+        res[0] = new Object[]{MsgDispatch.RECEIVED_MSG, isUser};
+        res[1] = msg;
+        res[2] = from;
         try {
             dos.writeObject(res);
         } catch (Exception e) {

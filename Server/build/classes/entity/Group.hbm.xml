@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 14, 2011 4:33:03 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="entity.Group" table="groups" catalog="chat">
+        <id name="id" type="integer">
+            <column name="id" length="11" />
+            <generator class="increment" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" />
+        </property>
+        <property name="createAt" type="timestamp">
+            <column name="createAt" />
+        </property>
+        <many-to-one name="createBy" class="entity.User" >
+            <column name="createBy" />
+        </many-to-one>
+        <property name="isActive" type="boolean">
+            <column name="isActive" />
+        </property> 
+    </class>
+</hibernate-mapping>

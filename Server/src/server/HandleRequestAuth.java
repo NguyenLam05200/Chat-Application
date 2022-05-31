@@ -4,12 +4,17 @@
  */
 package server;
 
+import dao.GroupDAO;
 import dao.MessageDAO;
-import static dao.MessageDAO.getListMsgContact;
+import dao.MessageGroupDAO;
 import dao.UserDAO;
+import entity.Group;
 import entity.Message;
+import entity.Message_Group;
 import entity.User;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -96,19 +101,112 @@ public class HandleRequestAuth {
 
     public static Object[][] initDasboard(User user, String _dispatchMsg) {
         Object[][] res;
+        Pair pair = MessageDAO.getListMsgContact(user);
+        List<Message> listMsgSingles = (List<Message>) pair.getKey();
+        List<User> listUsers = (List<User>) pair.getValue();
 
-        Pair pair = getListMsgContact(user);
-        List<Message> listMsg = (List<Message>) pair.getKey();
-        List<User> listContacts = (List<User>) pair.getValue();
+        int size1 = listUsers.size();
+        List<Group> listGroups = GroupDAO.getListGroup(user);
+        List<Message_Group> listMsgGroups = MessageGroupDAO.getListMsgContact(listGroups);
+        int size2 = listGroups.size();
 
-        int size = listMsg.size();
+        int size = size1 + size2;
+        List<Object[]> temp_contact = new ArrayList<>();
+        List<Object[]> temp_msg = new ArrayList<>();
+
+        for (int i = 0; i < size1; i++) {
+            temp_contact.add(listUsers.get(i).getObject());
+            temp_msg.add(listMsgSingles.get(i).getObject(user));
+        }
+        for (int i = size1; i < size; i++) {
+            temp_contact.add(listGroups.get(i - size1).getObject());
+            Message_Group x = listMsgGroups.get(i - size1);
+            temp_msg.add(x == null ? new Object[]{} : x.getObject(user));
+        }
+
+        List<Object[]> listContacts = new ArrayList<>();
+        List<Object[]> listMsg = new ArrayList<>();
+
+        for (int i = 0; i < size; i++) {
+            Object[] curContact = temp_contact.get(i);
+            Object[] curMsg = temp_msg.get(i);
+
+            int curSize = listContacts.size();
+            switch (curSize) {
+                case 0:
+                    listContacts.add(curContact);
+                    listMsg.add(curMsg);
+                    break;
+                case 1:
+                    int compare = compareObjectTime(listContacts.get(0), curContact, listMsg.get(0), curMsg);
+                    if (compare >= 0) {
+                        listContacts.add(curContact);
+                        listMsg.add(curMsg);
+                    } else {
+                        listContacts.add(0, curContact);
+                        listMsg.add(0, curMsg);
+                    }
+                    break;
+                default:
+                    for (int j = 0; j < curSize; j++) {
+                        if (j == 0) {
+                            int compare_first = compareObjectTime(listContacts.get(0), curContact, listMsg.get(0), curMsg);
+                            if (compare_first < 0) {
+                                listContacts.add(0, curContact);
+                                listMsg.add(0, curMsg);
+                                break;
+                            }
+                        }
+
+                        if (j == curSize - 1) {
+                            listContacts.add(curContact);
+                            listMsg.add(curMsg);
+                            break;
+                        }
+
+                        int compare1 = compareObjectTime(listContacts.get(j), curContact, listMsg.get(j), curMsg);
+                        int compare2 = compareObjectTime(listContacts.get(j + 1), curContact, listMsg.get(j + 1), curMsg);
+                        if (compare1 >= 0 && compare2 >= 0) {
+                            listContacts.add(j + 1, curContact);
+                            listMsg.add(j + 1, curMsg);
+                            break;
+                        }
+                    }
+                    break;
+            }
+        }
+
         res = new Object[size * 2 + 1][];
         res[0] = new Object[]{_dispatchMsg};
-        for (int i = 1; i < size + 1; i++) {
-            res[i] = listMsg.get(i - 1).getObject();
-            res[i + size] = listContacts.get(i - 1).getObject();
+        for (int i = 0; i < size; i++) {
+            res[i + 1] = listMsg.get(i);
+            res[i + 1 + size] = listContacts.get(i);
         }
         return res;
+    }
+
+    static int compareObjectTime(Object[] contact1, Object[] contact2, Object[] msg1, Object[] msg2) {
+// >0: msg1 sendTime value greater
+// <0: msg2 sendTime value greater
+
+        Timestamp ts1;
+        Timestamp ts2;
+
+        int len1 = msg1.length;
+        if (len1 == 0 || msg1 == null) {
+            ts1 = Timestamp.valueOf(contact1[2].toString());
+        } else {
+            ts1 = Timestamp.valueOf(msg1[2].toString());
+        }
+
+        int len2 = msg2.length;
+        if (len2 == 0 || msg2 == null) {
+            ts2 = Timestamp.valueOf(contact2[2].toString());
+        } else {
+            ts2 = Timestamp.valueOf(msg2[2].toString());
+        }
+
+        return ts1.compareTo(ts2);
     }
 
 }

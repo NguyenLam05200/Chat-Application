@@ -18,8 +18,10 @@ import java.io.ObjectOutputStream;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
 import storage.Message;
 import storage.User;
@@ -95,7 +97,7 @@ public class Dashboard extends javax.swing.JFrame {
     }
 
     private void renderListChatContacts() {
-        listMsgContactsPanel = new ListMsgContactPanel(Client.listContacts, Client.listMsgContacts, Client.listContactsID);
+        listMsgContactsPanel = new ListMsgContactPanel(Client.listContacts, Client.listMsgContacts);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 scrollNavMsgContacts.setViewportView(listMsgContactsPanel);
@@ -103,7 +105,7 @@ public class Dashboard extends javax.swing.JFrame {
         });
     }
 
-    public void renderSearchUserResults(List<User> listSearchUserResults, String caseRender) {
+    public void renderSearchUserResults(List<Object[]> listSearchUserResults, String caseRender) {
         switch (caseRender) {
             case "forContact":
                 if (listSearchUserResults.isEmpty()) {
@@ -132,11 +134,11 @@ public class Dashboard extends javax.swing.JFrame {
                         }
                     });
                 } else {
-                    ListSearchMemberResult searchResults = new ListSearchMemberResult(listSearchUserResults);
+                    resultsForAddPanel = new ListSearchMemberResult(listSearchUserResults);
 
                     java.awt.EventQueue.invokeLater(new Runnable() {
                         public void run() {
-                            jScrollPane1.setViewportView(searchResults);
+                            jScrollPane1.setViewportView(resultsForAddPanel);
                             setSessionPanelBody("bodyNewGroup");
                         }
                     });
@@ -231,7 +233,7 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         bodyNewGroup = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        inputGroupNameField = new javax.swing.JTextField();
         jLabel22 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
@@ -1169,8 +1171,8 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel16.setForeground(new java.awt.Color(0, 0, 0));
         jLabel16.setText("Group name");
 
-        jTextField3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jTextField3.setMargin(new java.awt.Insets(0, 5, 0, 0));
+        inputGroupNameField.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        inputGroupNameField.setMargin(new java.awt.Insets(0, 5, 0, 0));
 
         jLabel22.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(0, 0, 0));
@@ -1212,6 +1214,11 @@ public class Dashboard extends javax.swing.JFrame {
         jButton3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jButton3.setForeground(new java.awt.Color(0, 0, 0));
         jButton3.setText("Create");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setBorder(null);
@@ -1383,7 +1390,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addGroup(bodyNewGroupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField3)
+                    .addComponent(inputGroupNameField)
                     .addGroup(bodyNewGroupLayout.createSequentialGroup()
                         .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1403,7 +1410,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(inputGroupNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(bodyNewGroupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1532,12 +1539,21 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                jScrollPane1.setViewportView(loadingLabel);
+            }
+        });
+
+        String usernameForSearch = jTextField4.getText();
+        Object[] req = new Object[]{MsgDispatch.SEARCH_USER_FOR_ADD, usernameForSearch};
+        sendReq(req);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void option1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_option1MouseClicked
         // TODO add your handling code here:
-        ListSearchMemberResult searchResults = new ListSearchMemberResult(Client.listContacts);
-        jScrollPane1.setViewportView(searchResults);
+        resultsForAddPanel = new ListSearchMemberResult(Client.listContacts);
+        jScrollPane1.setViewportView(resultsForAddPanel);
         setSessionPanelBody("bodyNewGroup");
     }//GEN-LAST:event_option1MouseClicked
 
@@ -1584,6 +1600,37 @@ public class Dashboard extends javax.swing.JFrame {
         jTextField4.setText("");
     }//GEN-LAST:event_jTextField4MouseClicked
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+
+        String inputGroupName = inputGroupNameField.getText();
+        if (inputGroupName.equalsIgnoreCase("")) {
+            JOptionPane.showMessageDialog(this, "Please fill in name group field!");
+        } else {
+            List<String> selectedUserForAdd = new ArrayList<>();
+            int size = resultsForAddPanel.listCheckbox.size();
+
+            for (int i = 0; i < size; i++) {
+                if (resultsForAddPanel.listCheckbox.get(i).isSelected()) {
+                    selectedUserForAdd.add(resultsForAddPanel.listMemberResults.get(i)[0].toString());
+                }
+            }
+
+            int sizeMemberIDs = selectedUserForAdd.size();
+            Object[] req = new Object[sizeMemberIDs + 2];
+            req[0] = MsgDispatch.CREATE_NEW_GROUP;
+            req[1] = inputGroupName;
+            for (int i = 0; i < sizeMemberIDs; i++) {
+                req[i + 2] = selectedUserForAdd.get(i);
+            }
+            if (selectedUserForAdd.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please selected at least 1 member for create new group!");
+            } else {
+                sendReq(req);
+            }
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     void setSessionPanelNav(String sessionName) {
         Component[] cpnts = nav.getComponents();
         for (Component c : cpnts) {
@@ -1610,34 +1657,33 @@ public class Dashboard extends javax.swing.JFrame {
         body.repaint();
     }
 
-    public void clickContactMsg(User contact) {
-        labelContactName.setText(contact.getName());
-
-//set text for last seen
-        Timestamp lastseenShow = contact.getLastSeen();
-        Instant start = lastseenShow.toInstant();
-        Instant stop = Instant.now();
-        Duration duration = Duration.between(start, stop);
-        long totalHours = duration.toHours();
-        if (totalHours > 24) {
-            long toDays = duration.toDays();
-            if (toDays > 30) {
-                toDays /= 30;
-                labelContactLastseen.setText("last seen " + toDays + " months ago");
+    public void clickContactMsg(String nameContact, Timestamp lastseenShow) {
+        labelContactName.setText(nameContact);
+        if (lastseenShow != null) {
+            Instant start = lastseenShow.toInstant();
+            Instant stop = Instant.now();
+            Duration duration = Duration.between(start, stop);
+            long totalHours = duration.toHours();
+            if (totalHours > 24) {
+                long toDays = duration.toDays();
+                if (toDays > 30) {
+                    toDays /= 30;
+                    labelContactLastseen.setText("last seen " + toDays + " months ago");
+                } else {
+                    labelContactLastseen.setText("last seen " + toDays + " days ago");
+                }
             } else {
-                labelContactLastseen.setText("last seen " + toDays + " days ago");
+                long toMinutes = duration.toMinutes();
+                if (toMinutes >= 60) {
+                    labelContactLastseen.setText("last seen " + totalHours + " hours ago");
+                } else {
+                    labelContactLastseen.setText("last seen " + toMinutes + " minutes ago");
+                }
+
             }
         } else {
-            long toMinutes = duration.toMinutes();
-            if (toMinutes >= 60) {
-                labelContactLastseen.setText("last seen " + totalHours + " hours ago");
-            } else {
-                labelContactLastseen.setText("last seen " + toMinutes + " minutes ago");
-            }
-
+            labelContactLastseen.setText("group");
         }
-// end set text for last seen
-
         setSessionPanelBody("bodyMessage");
     }
 
@@ -1679,52 +1725,57 @@ public class Dashboard extends javax.swing.JFrame {
     void clickSendMessage() {
         String newTextMessage = inputMessage.getText();
         if (!newTextMessage.equals("")) {
-            Object[] req = new Object[]{MsgDispatch.DELIVER_MSG, Client.curContact.getId(), newTextMessage};
+            boolean isUser = Client.curContact.length == 7;
+            Object[] req = new Object[]{MsgDispatch.DELIVER_MSG, isUser, Client.curContact[0], newTextMessage};
             sendReq(req);
 
-            Message newMsg = new Message(newTextMessage, Client.user, Client.curContact);
-
-            //render chat panel again
-            curListMsgChat.add(newMsg);
-            renderListMsgChat();
-            // end render chat panel again
-
-            //render chat contact again
-            int contactID = Client.curContact.getId();
-            int index = Client.listContactsID.indexOf(contactID);
-            if (index == -1) { // first time contact
-                Client.listContactsID.add(0, contactID);
-                Client.listContacts.add(0, Client.curContact);
-
-                Client.listMsgContacts.add(0, newMsg);
-            } else {
-                // already contact
-                Client.listContactsID.remove(index);
-                Client.listContactsID.add(0, contactID);
-
-                User _contact = Client.listContacts.get(index);
-                Client.listContacts.remove(index);
-                Client.listContacts.add(0, _contact);
-
-                Client.listMsgContacts.remove(index);
-                Client.listMsgContacts.add(0, newMsg);
-            }
-            listMsgContactsPanel = new ListMsgContactPanel(Client.listContacts, Client.listMsgContacts, Client.listContactsID);
-            renderListChatContacts();
-
+//            Object[] newMsg;
+//            if (isUser) {
+//                newMsg = new Object[]{0, };
+//            } else {
+//                newMsg = new Object[]{};
+//            }
+//
+//            //render chat panel again
+//            curListMsgChat.add(newMsg);
+//            renderListMsgChat();
+//            // end render chat panel again
+//
+//            //render chat contact again
+//            int contactID = Client.curContact.getId();
+//            int index = Client.listContactsID.indexOf(contactID);
+//            if (index == -1) { // first time contact
+//                Client.listContactsID.add(0, contactID);
+//                Client.listContacts.add(0, Client.curContact);
+//
+//                Client.listMsgContacts.add(0, newMsg);
+//            } else {
+//                // already contact
+//                Client.listContactsID.remove(index);
+//                Client.listContactsID.add(0, contactID);
+//
+//                User _contact = Client.listContacts.get(index);
+//                Client.listContacts.remove(index);
+//                Client.listContacts.add(0, _contact);
+//
+//                Client.listMsgContacts.remove(index);
+//                Client.listMsgContacts.add(0, newMsg);
+//            }
+//            listMsgContactsPanel = new ListMsgContactPanel(Client.listContacts, Client.listMsgContacts, Client.listContactsID);
+//            renderListChatContacts();
             // end render chat contact again
             inputMessage.setText("");
         }
     }
 
-    public void requestListMsgChat(int contactId) {
+    public void requestListMsgChat(boolean isUser, Object contactId) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 scrollTemp.setViewportView(loadingLabel);
             }
         });
 
-        Object[] req = new Object[]{MsgDispatch.GET_LIST_MSG_CHAT, contactId};
+        Object[] req = new Object[]{MsgDispatch.GET_LIST_MSG_CHAT, isUser, contactId};
         sendReq(req);
     }
 
@@ -1739,33 +1790,64 @@ public class Dashboard extends javax.swing.JFrame {
 //        });
     }
 
-    public void getNewMsg(Message newMsg, User sendBy) {
+    public void createNewGroupSuccess(Object[] newGr) {
+        requestListMsgChat(false, newGr[0]);
+        for (Object[] x : Client.listContacts) {
+            if (x.length == newGr.length && x[0].toString().equals(newGr[0].toString())) {
+                Client.curContact = newGr;
+            }
+        }
+        clickContactMsg(newGr[1].toString(), null);
+    }
+
+    public void getNewMsg(Object[] newMsg, Object[] contact) {
         //render chat contact again
-        int contactID = sendBy.getId();
-        int index = Client.listContactsID.indexOf(contactID);
-        if (index == -1) { // never contact
+        boolean isFirst = true;
+        String contactID = contact[0].toString();
+        for (int index = 0; index < Client.listContactsID.size(); index++) {
+            if (Client.listContactsID.get(index).equals(contactID) && Client.listContacts.get(index).length == contact.length) {
+                Client.listContactsID.remove(index);
+                Client.listContactsID.add(0, contactID);
+
+                Client.listContacts.remove(index);
+                Client.listContacts.add(0, contact);
+
+                Client.listMsgContacts.remove(index);
+                Client.listMsgContacts.add(0, newMsg);
+                isFirst = false;
+            }
+        }
+        if (isFirst) {
             Client.listContactsID.add(0, contactID);
 
-            Client.listContacts.add(0, sendBy);
+            Client.listContacts.add(0, contact);
 
-            Client.listMsgContacts.add(0, newMsg);
-        } else {
-            // already contact
-            Client.listContactsID.remove(index);
-            Client.listContactsID.add(0, contactID);
-
-            User _contact = Client.listContacts.get(index);
-            Client.listContacts.remove(index);
-            Client.listContacts.add(0, _contact);
-
-            Client.listMsgContacts.remove(index);
             Client.listMsgContacts.add(0, newMsg);
         }
-        listMsgContactsPanel = new ListMsgContactPanel(Client.listContacts, Client.listMsgContacts, Client.listContactsID);
+//        int index = Client.listContactsID.indexOf(contactID);
+//        if (index == -1 || Client.listContacts.get(index).length != contact.length) { // never contact
+//            Client.listContactsID.add(0, contactID);
+//
+//            Client.listContacts.add(0, contact);
+//
+//            Client.listMsgContacts.add(0, newMsg);
+//        } else {
+//            // already contact
+//            Client.listContactsID.remove(index);
+//            Client.listContactsID.add(0, contactID);
+//
+//            Object[] _contact = Client.listContacts.get(index);
+//            Client.listContacts.remove(index);
+//            Client.listContacts.add(0, _contact);
+//
+//            Client.listMsgContacts.remove(index);
+//            Client.listMsgContacts.add(0, newMsg);
+//        }
+        listMsgContactsPanel = new ListMsgContactPanel(Client.listContacts, Client.listMsgContacts);
         renderListChatContacts();
         // end render chat contact again
 
-        if (Client.curContact != null && Client.curContact.getId() == sendBy.getId()) {
+        if (Client.curContact != null && Client.curContact[0].toString().equals(contact[0].toString()) && Client.curContact.length == contact.length) {
             //render chat panel again
             curListMsgChat.add(newMsg);
             renderListMsgChat();
@@ -1809,6 +1891,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel eachMessage7;
     private javax.swing.JLabel emailInfo;
     private javax.swing.JPanel info;
+    private javax.swing.JTextField inputGroupNameField;
     private javax.swing.JTextField inputMessage;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -1855,7 +1938,6 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JLabel labelContactLastseen;
     private javax.swing.JLabel labelContactName;
@@ -1890,6 +1972,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel noResultLabel;
     private javax.swing.JPanel listMsgContactsPanel;
     private javax.swing.JPanel listMsgChatPanel;
+    private ListSearchMemberResult resultsForAddPanel;
     ObjectOutputStream outStream;
 
     private void sendReq(Object[] _req) {

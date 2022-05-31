@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 14, 2011 4:33:03 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="entity.Group_User" table="group_user" catalog="chat">
+        <composite-id>
+            <key-many-to-one name="userID" class="entity.User" column="userID"/>
+            <key-many-to-one name="groupID" class="entity.Group" column="groupID"/>
+        </composite-id>
+        <property name="importAt" type="timestamp">
+            <column name="importAt" />
+        </property>
+        <many-to-one name="importBy" class="entity.User" >
+            <column name="importBy" />
+        </many-to-one> 
+        <property name="isActive" type="boolean">
+            <column name="isActive" />
+        </property>  
+    </class>
+</hibernate-mapping>

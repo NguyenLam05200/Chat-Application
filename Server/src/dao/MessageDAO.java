@@ -154,12 +154,12 @@ public class MessageDAO {
             } else {
                 set.add(msg.getSendTo().getId());
             }
-        }
+        } //set: 6 7 8 9 10 11
 
         List<User> contacts = new ArrayList<>();
         for (int id : set) {
             User u = UserDAO.findOneById(id);
-            contacts.add(u);
+            contacts.add(0, u);
         }
 
         List<Message> temp = new ArrayList<>();
@@ -196,26 +196,17 @@ public class MessageDAO {
 
     public static void main(String[] args) throws NoSuchAlgorithmException {
 
-//        User user = UserDAO.findOneByUsername("a");
-//
-//        Pair pair = getListMsgContact(user);
-//        List<Message> listMsg = (List<Message>) pair.getKey();
-//        List<User> listContacts = (List<User>) pair.getValue();
-//        System.out.println("stop");
-////        List<Message> listMsg = getMsgRelateSoon(user);
-//
-//        for (Message x : listMsg) {
-//            System.out.println(x.getSendBy().getId() + " -> " + x.getSendTo().getId());
-//        }
-//        for (User x : listContacts) {
-//            System.out.println("user: " + x.getId());
-//        }
-        User user1 = UserDAO.findOneByUsername("a");
-        User user2 = UserDAO.findOneByUsername("s");
-        List<Message> listMsg = getListMsgChat(user1, user2);
-        for (Message x : listMsg) {
-            System.out.println(x.getContent());
+        User user = UserDAO.findOneById(5);
+        System.out.println("User: " + user.toString());
+        Pair pair = MessageDAO.getListMsgContact(user);
+        List<Message> listMsgSingles = (List<Message>) pair.getKey();
+        List<User> listUsers = (List<User>) pair.getValue();
+
+        int size1 = listUsers.size();
+        for (int i = 0; i < size1; i++) {
+            System.out.println("contact: " + listUsers.get(i).getId());
+            System.out.println("msg: " + listMsgSingles.get(i).getContent());
+
         }
-        Pair pair = getListMsgContact(user1);
     }
 }

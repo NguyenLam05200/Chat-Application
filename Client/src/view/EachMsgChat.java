@@ -37,11 +37,17 @@ public class EachMsgChat extends javax.swing.JPanel {
 //        initComponents();
     }
 
-    public EachMsgChat(Message msg) {
+    public EachMsgChat(Object[] msg) {
+        String sendBy = msg[3].toString();
+        try {
+            int idSendBy = Integer.parseInt(sendBy);
+            this.mine = idSendBy == Client.user.getId();
+        } catch (NumberFormatException ex) {
+            this.mine = false;
+        }
+        String objSendAt = msg[2].toString();
+        Timestamp date2 = Timestamp.valueOf(objSendAt);
 
-        this.mine = msg.getSendBy().getId() == Client.user.getId();
-
-        Timestamp date2 = msg.getSendAt();
         String _time;
         if (isRightDate(date2)) {
             _time = new SimpleDateFormat("hh:mm a").format(date2);
@@ -49,26 +55,26 @@ public class EachMsgChat extends javax.swing.JPanel {
             _time = new SimpleDateFormat("hh:mm a dd/MM/yyyy").format(date2);
         }
 
-        String _content = "<html><p>" + msg.getContent() + "</p></html>";
-
+        String _content = "<html><p>" + msg[1].toString() + "</p></html>";
+        String[] tempName = msg[3].toString().split(" ");
+        String _auth = tempName[tempName.length - 1];
         if (mine) {
             initComponentsRight(_content, _time);
         } else {
-            initComponentsLeft(_content, _time);
+            initComponentsLeft(_content, _time, _auth);
         }
     }
 
-    public EachMsgChat(boolean _mine, String _content, String _time) {
-        this.mine = _mine;
-
-        if (_mine) {
-            initComponentsRight(_content, _time);
-        } else {
-            initComponentsLeft(_content, _time);
-
-        }
-    }
-
+//    public EachMsgChat(boolean _mine, String _content, String _time) {
+//        this.mine = _mine;
+//
+//        if (_mine) {
+//            initComponentsRight(_content, _time);
+//        } else {
+//            initComponentsLeft(_content, _time);
+//
+//        }
+//    }
     private void initComponentsRight(String _content, String _time) {
         auth = new javax.swing.JLabel();
         content = new javax.swing.JLabel();
@@ -137,7 +143,7 @@ public class EachMsgChat extends javax.swing.JPanel {
         );
     }
 
-    private void initComponentsLeft(String _content, String _time) {
+    private void initComponentsLeft(String _content, String _time, String _auth) {
         auth = new javax.swing.JLabel();
         content = new javax.swing.JLabel();
         time = new javax.swing.JLabel();
@@ -167,8 +173,7 @@ public class EachMsgChat extends javax.swing.JPanel {
         auth.setForeground(new java.awt.Color(0, 0, 0));
         auth.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
-        String[] tempName = Client.curContact.getName().split(" ");
-        auth.setText(tempName[tempName.length - 1]);
+        auth.setText(_auth);
 
 //        javax.swing.GroupLayout thisLayout = new javax.swing.GroupLayout(this);
 //        this.setLayout(thisLayout);
