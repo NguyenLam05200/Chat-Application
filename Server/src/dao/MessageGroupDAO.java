@@ -34,7 +34,7 @@ public class MessageGroupDAO {
             List<Message_Group> temp = null;
             Session session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            String hql = " FROM Message_Group where sendTo = :input ORDER BY sendAt DESC";
+            String hql = " FROM Message_Group where sendTo = :input";
             Query query = session.createQuery(hql);
             query.setParameter("input", group);
 
