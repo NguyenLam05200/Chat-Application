@@ -15,7 +15,6 @@ import java.net.*;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import storage.Message;
 import storage.User;
 import view.Auth;
 import view.Dashboard;
@@ -31,6 +30,22 @@ public class Client {
 
     public static Object[] curContact;
     public static List<Object[]> curListMsgChat;
+
+    public static void cleanAndLogout() {
+        Client.user = null;
+//        Client.auth = null;
+        Client.dashboard = null;
+        Client.listContacts = null;
+        Client.listContactsID = null;
+        Client.listMsgContacts = null;
+        Client.curContact = null;
+        Client.curListMsgChat = null;
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                auth.setVisible(true);
+            }
+        });
+    }
 
     public static void main(String args[]) throws UnknownHostException, IOException {
 

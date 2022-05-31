@@ -6,13 +6,11 @@ package server;
 
 import Config.MsgDispatch;
 import dao.UserDAO;
-import entity.Message;
 import entity.User;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -90,6 +88,12 @@ public class ClientHandler implements Runnable {
                         res = HandleRequestOther.createNewGroup(received, dispatchMsg, user);
                         dos.writeObject(res);
                         break;
+                    case MsgDispatch.LOGOUT:
+                        if (user != null) {
+                            UserDAO.updateLastSeen(user);
+                        }
+                        this.user = null;
+                        break;
                     default:
                         throw new AssertionError();
                 }
@@ -97,7 +101,9 @@ public class ClientHandler implements Runnable {
             } catch (IOException e) {
                 System.out.println((user == null ? "null" : user.getName()) + " disconnected!");
                 // set last seen of user is time leaving
-                UserDAO.updateLastSeen(user);
+                if (user != null) {
+                    UserDAO.updateLastSeen(user);
+                }
                 break;
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);

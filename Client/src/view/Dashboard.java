@@ -23,8 +23,6 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
-import storage.Message;
-import storage.User;
 
 /**
  *
@@ -98,6 +96,12 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void renderListChatContacts() {
         listMsgContactsPanel = new ListMsgContactPanel(Client.listContacts, Client.listMsgContacts);
+        for (int i = 0; i < Client.listContactsID.size(); i++) {
+            if (Client.curContact != null && Client.curContact[0].toString().equals(Client.listContactsID.get(i))) {
+                ListMsgContactPanel.curClick = i;
+                ListMsgContactPanel.listMsgContactPanel.get(i).setColorClick();
+            }
+        }
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 scrollNavMsgContacts.setViewportView(listMsgContactsPanel);
@@ -818,6 +822,9 @@ public class Dashboard extends javax.swing.JFrame {
         option3.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(255, 102, 255)));
         option3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         option3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                option3MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 option3MouseEntered(evt);
             }
@@ -1631,6 +1638,18 @@ public class Dashboard extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void option3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_option3MouseClicked
+        // TODO add your handling code here:
+        logout();
+    }//GEN-LAST:event_option3MouseClicked
+
+    void logout() {
+        Object[] req = new Object[]{MsgDispatch.LOGOUT};
+        sendReq(req);
+        dispose();
+        Client.cleanAndLogout();
+    }
+
     void setSessionPanelNav(String sessionName) {
         Component[] cpnts = nav.getComponents();
         for (Component c : cpnts) {
@@ -1824,25 +1843,6 @@ public class Dashboard extends javax.swing.JFrame {
 
             Client.listMsgContacts.add(0, newMsg);
         }
-//        int index = Client.listContactsID.indexOf(contactID);
-//        if (index == -1 || Client.listContacts.get(index).length != contact.length) { // never contact
-//            Client.listContactsID.add(0, contactID);
-//
-//            Client.listContacts.add(0, contact);
-//
-//            Client.listMsgContacts.add(0, newMsg);
-//        } else {
-//            // already contact
-//            Client.listContactsID.remove(index);
-//            Client.listContactsID.add(0, contactID);
-//
-//            Object[] _contact = Client.listContacts.get(index);
-//            Client.listContacts.remove(index);
-//            Client.listContacts.add(0, _contact);
-//
-//            Client.listMsgContacts.remove(index);
-//            Client.listMsgContacts.add(0, newMsg);
-//        }
         listMsgContactsPanel = new ListMsgContactPanel(Client.listContacts, Client.listMsgContacts);
         renderListChatContacts();
         // end render chat contact again

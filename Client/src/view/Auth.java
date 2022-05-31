@@ -8,7 +8,6 @@ import Config.MsgDispatch;
 import java.awt.Component;
 import java.awt.Container;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import javax.swing.JOptionPane;
 

@@ -1,2 +1,0 @@
-controller.testSendMsg
-controller.Client1

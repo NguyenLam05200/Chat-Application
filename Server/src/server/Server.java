@@ -9,8 +9,6 @@ package server;
  * @author holohoi
  */
 import Config.Env;
-import entity.Message;
-import entity.User;
 import java.io.*;
 import java.util.*;
 import java.net.*;
